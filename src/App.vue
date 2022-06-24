@@ -1,10 +1,16 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-  </nav>
   <router-view/>
+  <div id="app"></div>
 </template>
 
+<script>
+  export default {
+    name: "app",
+    mounted() {
+      document.title = "Salary Differential Calculator"
+    }
+  }
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
