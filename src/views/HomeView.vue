@@ -1,7 +1,6 @@
 <template>
-
   <section class="flex justify-center items-center flex-col md:flex-row">
-    <div class="justify-center flex bg-yellow-300 h-screen w-full md:w-1/4 border border-red-500">
+    <div class="justify-center flex bg-yellow-300 h-fit w-full md:w-1/4 border border-red-500">
       <form action="" class="flex flex-col space-y-6 justify-center items-center  border border-red-500">
         <div class="justify-center text-2xl">SALARY DIFFERENTIAL CALCULATOR</div>
         <div class="flex flex-col">
