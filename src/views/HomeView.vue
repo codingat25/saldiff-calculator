@@ -128,7 +128,7 @@
 
     <div class="h-screen w-3/4 border border-red-500">
 
-      <h1>test</h1>
+      <h1>TABLE HERE</h1>
 
     </div>
 
