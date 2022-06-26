@@ -68,7 +68,7 @@
           </div>
 
           <div class="text-l">
-            <input type="submit" value="CALCULATE" class="px-20 py-4 rounded-md cursor-pointer
+            <input type="submit" @click="handleSubmit" class="px-20 py-4 rounded-md cursor-pointer
            bg-indigo-600 hover:bg-indigo-700 focus:outline-indigo-400 
            text-white">
           </div>
@@ -84,8 +84,8 @@
       <div>Middle Initial: {{mInitial}}</div>
       <div>Position:{{positionTitle}}</div>
       <div>Date of Last Promotion:{{dateOfLastProm}}</div>
-      <div>From:{{dateFrom}}</div>
-      <div>To:{{dateTo}}</div>
+      <div>From:{{dayjs(dateFrom).format('MM/DD/YYYY')}}</div>
+      <div>To:{{dayjs(dateTo).format('MM/DD/YYYY')}}</div>
       <div>Salary Differential(1):{{salDiff1}}</div>
       <div>Period Covered From:{{periodFrom}}</div>
       <div>Period Covered To:{{periodTo}}</div>
@@ -97,7 +97,7 @@
       <div>Witholding Tax:{{withholdingtax}}</div>
       <div>Total Deductions:{{totalDeduct}}</div>
       <div>Net Amount:{{netAmount}}</div>
-      <div>Test dayjs: {{dayjs('10/19/2021').daysInMonth()}}</div>
+      <div>Test dayjs: {{dayjs('10/31/2021').businessDiff(dayjs(dateFrom))}}</div>
     </div>
 
 
@@ -125,11 +125,11 @@ export default {
       mInitial: '',
       positionTitle: '',
       dateOfLastProm: '',
-      dateFrom: '',
-      dateTo: '',
-      salDiff1: '',
-      periodFrom: '',
-      periodTo: '',
+      dateFrom: '10/29/2021',
+      dateTo: '12/31/2021',
+      salDiff1: null,
+      periodFrom: 28589,
+      periodTo: 28905,
       salDiff2: '',
       sdBonus: '',
       grossSalDiff: '',
@@ -140,6 +140,23 @@ export default {
       netAmount: '',
     }
   },
+  methods: {
+    handleSubmit() {
+      let computeBusinessDays
+      let lastDayOfMonth
+      let differenceInMonths
+
+      this.salDiff1 = this.periodTo - this.periodFrom
+      lastDayOfMonth = dayjs(this.dateFrom).endOf('month').format('MM/DD/YYYY')
+      computeBusinessDays = dayjs(lastDayOfMonth).businessDiff(dayjs(this.dateFrom))
+      differenceInMonths = dayjs(this.dateTo).diff(this.dateFrom, 'month') // 2
+      this.salDiff2 = ((this.salDiff1/22)*computeBusinessDays)+(this.salDiff1*differenceInMonths)
+      this.salDiff2 = Math.round(this.salDiff2*100)/100
+    } 
+  },
   components: {},
 };
 </script>
+
+
+ 
