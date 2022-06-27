@@ -154,9 +154,10 @@ export default {
       this.salDiff2 = ((this.salDiff1/22)*computeBusinessDays)+(this.salDiff1*differenceInMonths)
       this.salDiff2 = Math.round(this.salDiff2*100)/100
       
-      //Compute if personnel is eligible for SD bonus
+      //Compute if personnel is eligible for SD bonus, if eligible SD Bonus should be 1 month of sal diff
 
-          //code here
+          //sample code should be or hopefully xD: dayjs('2010-10-20').isBetween('2010-10-19', dayjs('2010-10-25')) 
+          //if inbetween is true and if calendar days is equivalent to 1 month or more, add sd bonus
 
       
       //Add Salary Differential + SD Bonus
