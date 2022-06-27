@@ -90,7 +90,7 @@
       <div>Period Covered From:{{periodFrom}}</div>
       <div>Period Covered To:{{periodTo}}</div>
       <div>Salary Differential(2):{{salDiff2}}</div>
-      <div>SD Bonus:{{sdBonus}}</div>
+      <div>SD Bonus:{{sdBonus}}</div> 
       <div>Gross Sal Diff:{{grossSalDiff}}</div>
       <div>GSIS:{{gsis}}</div>
       <div>Less GSIS:{{lessGsis}}</div>
@@ -142,6 +142,7 @@ export default {
   },
   methods: {
     handleSubmit() {
+      //Compute Salary Differential depending on business days
       let computeBusinessDays
       let lastDayOfMonth
       let differenceInMonths
@@ -152,6 +153,37 @@ export default {
       differenceInMonths = dayjs(this.dateTo).diff(this.dateFrom, 'month') // 2
       this.salDiff2 = ((this.salDiff1/22)*computeBusinessDays)+(this.salDiff1*differenceInMonths)
       this.salDiff2 = Math.round(this.salDiff2*100)/100
+      
+      //Compute if personnel is eligible for SD bonus
+
+          //code here
+
+      
+      //Add Salary Differential + SD Bonus
+
+          //code here
+
+      //Compute GSIS
+
+          //code here
+
+      //Subtract GSIS from Total of SD 
+
+          //code here
+
+      //Compute Tax
+
+          //code here
+
+      //Compute Total Deductions
+
+          //code here
+      
+      //Compute Net
+
+          //code here
+
+
     } 
   },
   components: {},
