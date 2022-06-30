@@ -4,16 +4,16 @@
       <form action="" class="flex flex-col space-y-6 justify-center items-center   ">
         <div class="justify-center text-2xl">SALARY DIFFERENTIAL CALCULATOR</div>
         <div class="flex flex-col">
-          <label for="fname" class="w-60 lg:w-72">Employee Number</label>
-          <input type="number" required v-model="employeeNo" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
+          <label for="employeeNo" class="w-60 lg:w-72">Employee Number</label>
+          <input type="number" required id="employeeNo" v-model="employeeNo" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
           <label for="fname" class="w-60 lg:w-72">First name</label>
-          <input type="text" required v-model="fName" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
-          <label for="lname" class="w-60 lg:w-72">Last name</label>
-          <input type="text" required v-model="lName" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
-          <label for="lname" class="w-60 lg:w-72">Middle Initial</label>
-          <input type="text" required v-model="mInitial" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
-          <label for="lname" class="w-60 lg:w-72">Position</label>
-          <select name="SalaryStep" v-model="positionTitle"  class="p-1 lg:w-72 h-8 rounded-md text-center">
+          <input type="text" required id="fName" v-model="fName" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
+          <label for="lName" class="w-60 lg:w-72">Last name</label>
+          <input type="text" required id="lName" v-model="lName" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
+          <label for="mInitial" class="w-60 lg:w-72">Middle Initial</label>
+          <input type="text" required id="mInitial" v-model="mInitial" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
+          <label for="positionTitle" class="w-60 lg:w-72">Position</label>
+          <select name="SalaryStep" id="positionTitle" v-model="positionTitle"  class="p-1 lg:w-72 h-8 rounded-md text-center">
             <option value="Teacher 1">Teacher 1</option>
             <option value="Teacher 2">Teacher 2</option>
             <option value="Teacher 3">Teacher 3</option>
@@ -24,8 +24,8 @@
             <option value="Master Teacher 1">Master Teacher 1</option>
             <option value="Master Teacher 2">Master Teacher 2</option>
           </select>
-          <label for="lname" class="w-60 lg:w-72 ">Date of Last Promotion</label>
-          <input type="date" v-model="dateOfLastProm" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
+          <label for="dateOfLastProm" class="w-60 lg:w-72 ">Date of Last Promotion</label>
+          <input type="date" id="dateOfLastProm" v-model="dateOfLastProm" class="w-60 lg:w-72 h-8 rounded-md p-1 text-center uppercase">
 
         </div>
 
@@ -33,8 +33,8 @@
 
           <div class="flex flex-col space-y-1 border-t border-indigo-500">
             <!-- Current SG and Step -->
-            <label class="w-60">From</label>
-            <input type="date" v-model="dateFrom" class="w-60 h-8 rounded-md p-1 text-center uppercase">
+            <label for="dateFrom" class="w-60">From</label>
+            <input type="date" id="dateFrom" v-model="dateFrom" class="w-60 h-8 rounded-md p-1 text-center uppercase">
             <label>Current Step</label>
             <select class="w-60 p-1 text-center">
               <option value="step1">Step 1</option>
@@ -52,9 +52,9 @@
           <div class="flex flex-col space-y-1 border-t border-indigo-500">
             <!-- Supposed SG and Step -->
 
-          <label class="w-60">To</label>
-          <input type="date" v-model="dateTo" class="w-60 h-8 rounded-md p-1 text-center uppercase">
-            <label for="lname">Supposed Step</label>
+          <label for="dateTo" class="w-60">To</label>
+          <input type="date" id="dateTo" v-model="dateTo" class="w-60 h-8 rounded-md p-1 text-center uppercase">
+            <label for="">Supposed Step</label>
             <select  class="w-60 p-1 text-center">
               <option value="step1">Step 1</option>
               <option value="step2">Step 2</option>
