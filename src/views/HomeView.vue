@@ -1,9 +1,70 @@
 <template>
-  <div class="flex justify-center items-center  w-screen h-screen border border-gray-300">
-    <div class="h-5/6 w-10/12 border border-gray-300">
+  <section id="mainform" class="flex justify-center items-center w-screen h-screen border border-gray-300">
+    <div class="h-screen w-screen md:w-4/5 md:h-5/6  border border-gray-500">
+      <form action="" class="h-full w-full">
+        <div class="h-fit space-y-2 w-full md:p-0 md:h-1/3 md:space-y-0 border border-gray-300">
+          <div class="h-1/6 w-full border border-blue-300"><h1>Employee Information</h1></div>
+          <div class="flex flex-col items-center md:flex-row h-5/6 w-full border border-red-300">
+            <label for=""><div class="text-sm">Employee Number</div><input type="text" class="w-4/5 border border-gray-300"></label>
+            <label for=""><div class="text-sm">Last Name</div><input type="text" class="w-4/5 border border-gray-300"></label>
+            <label for=""><div class="text-sm">First Name</div><input type="text" class="w-4/5 border border-gray-300"></label>
+            <label for=""><div class="text-sm">Middle Initial</div><input type="text" class="w-4/5 border border-gray-300"></label>
+            <label for=""><div class="text-sm">Position</div><input type="text" class="w-4/5 border border-gray-300"></label>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row h-fit md:h-1/3 w-full border border-gray-300">
+          <!-- Date of Last Promotion -->
+            <div class="flex justify-center items-center h-full w-full md:w-1/5 border border-gray-300">
+              <label for=""><div class="text-sm">Last Date of Promotion</div><input type="text" class="w-4/5 border border-gray-300"></label>
+            </div>
+
+          <!-- Salary Differential Per Month -->
+            <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-gray-300">
+              <h3 class="text-sm">Salary Differential Per Month</h3>
+              <div class="flex h-full items-center border border-blue-200">
+                  <label for=""><div class="text-sm">From</div><input type="text" class="w-4/5 border border-gray-300"></label>
+                  <label for=""><div class="text-sm">To</div><input type="text" class="w-4/5 border border-gray-300"></label>
+              </div>
+              <div>
+                  <label for=""><div class="text-sm">Difference</div><input type="text" class="w-4/5 border border-gray-300"></label>
+              </div>
+            </div>
+          <!-- Period Covered -->
+            <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-gray-300">
+              <h3 class="text-sm">Salary Differential Per Month</h3>
+              <div class="flex justify-center items-center h-full border border-blue-300">
+                  <label for=""><div class="text-sm">From</div><input type="text" class="w-4/5 border border-gray-300"></label>
+                  <label for=""><div class="text-sm">To</div><input type="text" class="w-4/5 border border-gray-300"></label>
+              </div>
+            </div>
+        </div>
+
+        <!-- Totals -->
+        <div class="flex flex-col md:flex-row h-fit md:h-1/3 w-full border border-red-300">
+          <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-yellow-300">
+              <h3 class="text-sm border border-green-500">Gross Salary Differential</h3>
+            <div class="flex flex-col md:flex-row h-full w-full border border-purple-400">
+               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
+                <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">Gross Amount for the period</h3></div>
+                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+               </div>
+               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">SD Bonus</h3></div>
+                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+               </div>
+               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">Total</h3></div>
+                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+               </div>
+            </div>
+          </div>
+          <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-gray-300"></div>
+          <div class="flex flex-col justify-start items-center h-full w-full md:w-1/5 border border-gray-300"></div>
+        </div>
+      </form>
 
     </div>
-  </div>
+  </section>
 </template> 
 
 <script>
