@@ -1,6 +1,9 @@
 <template>
-  
+  <div class="flex justify-center items-center  w-screen h-screen border border-gray-300">
+    <div class="h-5/6 w-10/12 border border-gray-300">
 
+    </div>
+  </div>
 </template> 
 
 <script>
