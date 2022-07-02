@@ -40,26 +40,59 @@
         </div>
 
         <!-- Totals -->
-        <div class="flex flex-col md:flex-row h-fit md:h-1/3 w-full border border-red-300">
+        <div class="flex flex-col md:flex-row h-fit md:h-1/3 w-full text-xs border border-red-700">
           <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-yellow-300">
-              <h3 class="text-sm border border-green-500">Gross Salary Differential</h3>
-            <div class="flex flex-col md:flex-row h-full w-full border border-purple-400">
-               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
-                <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">Gross Amount for the period</h3></div>
-                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+            <h3 class="text-sm border border-green-500">Gross Salary Differential</h3>
+            <div class="flex flex-col md:flex-row h-full w-full border border-purple-700">
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-4/12 border border-blue-300">
+                <div class="flex justify-center items-center w-full h-1/3"><h3>Gross Amount for the period</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
                </div>
-               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
-               <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">SD Bonus</h3></div>
-                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-4/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>SD Bonus</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
                </div>
-               <div class="flex flex-col justify-between items-center h-full w-4/12 border border-blue-300">
-               <div class="flex justify-center items-center w-full h-1/3"><h3 class="text-sm">Total</h3></div>
-                <div class="h-2/3 w-full border border-red-400">P 1,2345.00</div>
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-4/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>Total</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
                </div>
             </div>
           </div>
-          <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-gray-300"></div>
-          <div class="flex flex-col justify-start items-center h-full w-full md:w-1/5 border border-gray-300"></div>
+          <!-- Deductions -->
+          <div class="flex flex-col justify-start items-center h-full w-full md:w-2/5 border border-gray-300">
+            <h3 class="text-sm border border-green-500">Deductions</h3>
+            <div class="flex flex-col md:flex-row h-full w-full border border-purple-700">
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-3/12 border border-blue-300">
+                <div class="flex justify-center items-center w-full h-1/3"><h3>GSIS</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
+               </div>
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-3/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>Total GSIS</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
+               </div>
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-3/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>Tax</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
+               </div>
+               <div class="flex flex-col justify-between items-center h-full w-full md:w-3/12 border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>Total Deduction</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400">P 12,345.00</div>
+               </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col justify-start items-center h-full w-full md:w-1/5 border border-gray-300">
+            <div class="flex flex-col md:flex-row h-full w-full border border-purple-700">
+               <div class="flex flex-col justify-between items-center h-full w-full border border-blue-300">
+               <div class="flex justify-center items-center w-full h-1/3"><h3>Net Amount</h3></div>
+                <div class="flex justify-center items-center h-2/3 w-full border border-red-400 text-lg">P 12,345.00</div>
+               </div>
+            </div>
+            <div class="flex justify-evenly items-center w-full h-1/2 space-x-3">
+              <button class="p-2 rounded-md bg-red-600 text-white">RESET</button>
+              <button class="p-2 rounded-md bg-green-600 text-white">COPY</button>
+            </div>
+          </div>
         </div>
       </form>
 
