@@ -1,7 +1,7 @@
 <template>
   <section id="mainform" class="flex justify-center items-center w-screen h-screen border border-gray-300">
     <div class="h-screen w-screen md:w-4/6 md:h-4/6  border border-gray-500">
-      <form action="" class="h-full w-full">
+      <form @submit.prevent="handleSubmit" class="h-full w-full">
         <div class="h-fit space-y-2 w-full md:p-0 md:h-1/3 md:space-y-0 border border-gray-300">
           <div class="h-1/6 w-full border border-blue-300"><h1>Employee Information</h1></div>
           <div class="flex flex-col justify-evenly items-center md:flex-row h-5/6 w-full border border-red-300">
@@ -189,6 +189,12 @@ export default {
       const withholdingtax = ref('')
       const totalDeduct = ref('')
       const netAmount = ref('')
+
+      const handleSubmit = () => {
+        console.log(employeeNumber, fName, lName, mInitial, positionTitle, dateOfLastProm,
+                dateFrom, dateTo, salDiff1, periodFrom, periodTo, salDiff2, sdBonus, grossSalDiff, gsis, 
+                lessGsis, withholdingtax, totalDeduct, netAmount)
+      }
 
       return { day, dayBusiness, employeeNumber, fName, lName, mInitial, positionTitle, dateOfLastProm,
                 dateFrom, dateTo, salDiff1, periodFrom, periodTo, salDiff2, sdBonus, grossSalDiff, gsis, 
