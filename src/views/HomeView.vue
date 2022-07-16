@@ -156,6 +156,7 @@
 </template> 
 
 <script>
+import {ref} from 'vue'
 import dayjs from 'dayjs'
 import dayjsBusinessDays from 'dayjs-business-days'
 
@@ -165,80 +166,87 @@ dayjs.extend(dayjsBusinessDays)
 
 export default {
   name: "HomeView",
-  data() {
-      return {
-      dayjs,
-      dayjsBusinessDays,
-      employeeNo:null,
-      fName: null,
-      lName: null,
-      mInitial: null,
-      positionTitle: null,
-      dateOfLastProm: null,
-      dateFrom: null,
-      dateTo: null,
-      salDiff1: null,
-      periodFrom: null,
-      periodTo: null,
-      salDiff2: null,
-      sdBonus: null,
-      grossSalDiff: null,
-      gsis: null,
-      lessGsis: null,
-      withholdingtax: null,
-      totalDeduct: null,
-      netAmount: null,
-    }
-  },
-  methods: {
-    handleSubmit() {
-      //Compute Salary Differential depending on business days
-      let computeBusinessDays
-      let lastDayOfMonth
-      let differenceInMonths
+  setup() {
 
-      this.salDiff1 = this.periodTo - this.periodFrom
-      lastDayOfMonth = dayjs(this.dateFrom).endOf('month').format('MM/DD/YYYY')
-      computeBusinessDays = dayjs(lastDayOfMonth).businessDiff(dayjs(this.dateFrom))
-      differenceInMonths = dayjs(this.dateTo).diff(this.dateFrom, 'month') // 2
-      this.salDiff2 = ((this.salDiff1/22)*computeBusinessDays)+(this.salDiff1*differenceInMonths)
-      this.salDiff2 = Math.round(this.salDiff2*100)/100
+      const day = dayjs
+      const dayBusiness = dayjsBusinessDays
+      const employeeNumber = ref('')
+      const fName = ref('')
+      const lName = ref('')
+      const mInitial = ref('')
+      const positionTitle = ref('')
+      const dateOfLastProm = ref('')
+      const dateFrom = ref('')
+      const dateTo = ref('')
+      const salDiff1 = ref('')
+      const periodFrom = ref('')
+      const periodTo = ref('')
+      const salDiff2 = ref('')
+      const sdBonus = ref('')
+      const grossSalDiff = ref('')
+      const gsis = ref('')
+      const lessGsis = ref('')
+      const withholdingtax = ref('')
+      const totalDeduct = ref('')
+      const netAmount = ref('')
+
+      return { day, dayBusiness, employeeNumber, fName, lName, mInitial, positionTitle, dateOfLastProm,
+                dateFrom, dateTo, salDiff1, periodFrom, periodTo, salDiff2, sdBonus, grossSalDiff, gsis, 
+                lessGsis, withholdingtax, totalDeduct, netAmount}
+  }
+}
+
+
+//   },
+//   methods: {
+//     handleSubmit() {
+//       //Compute Salary Differential depending on business days
+//       let computeBusinessDays
+//       let lastDayOfMonth
+//       let differenceInMonths
+
+//       this.salDiff1 = this.periodTo - this.periodFrom
+//       lastDayOfMonth = dayjs(this.dateFrom).endOf('month').format('MM/DD/YYYY')
+//       computeBusinessDays = dayjs(lastDayOfMonth).businessDiff(dayjs(this.dateFrom))
+//       differenceInMonths = dayjs(this.dateTo).diff(this.dateFrom, 'month') // 2
+//       this.salDiff2 = ((this.salDiff1/22)*computeBusinessDays)+(this.salDiff1*differenceInMonths)
+//       this.salDiff2 = Math.round(this.salDiff2*100)/100
       
-      //Compute if personnel is eligible for SD bonus, if eligible SD Bonus should be 1 month of sal diff
+//       //Compute if personnel is eligible for SD bonus, if eligible SD Bonus should be 1 month of sal diff
 
-          //sample code should be or hopefully xD: dayjs('2010-10-20').isBetween('2010-10-19', dayjs('2010-10-25')) 
-          //if inbetween is true and if calendar days is equivalent to 1 month or more, add sd bonus
+//           //sample code should be or hopefully xD: dayjs('2010-10-20').isBetween('2010-10-19', dayjs('2010-10-25')) 
+//           //if inbetween is true and if calendar days is equivalent to 1 month or more, add sd bonus
 
       
-      //Add Salary Differential + SD Bonus
+//       //Add Salary Differential + SD Bonus
 
-          //code here
+//           //code here
 
-      //Compute GSIS
+//       //Compute GSIS
 
-          //code here
+//           //code here
 
-      //Subtract GSIS from Total of SD 
+//       //Subtract GSIS from Total of SD 
 
-          //code here
+//           //code here
 
-      //Compute Tax
+//       //Compute Tax
 
-          //code here
+//           //code here
 
-      //Compute Total Deductions
+//       //Compute Total Deductions
 
-          //code here
+//           //code here
       
-      //Compute Net
+//       //Compute Net
 
-          //code here
+//           //code here
 
 
-    } 
-  },
-  components: {},
-};
+//     } 
+//   },
+//   components: {},
+// };
 </script>
 
 
