@@ -1,13 +1,17 @@
 <template>
-    <p class="align-center p-20">Welcome</p>
+<div>
+    <p class="align-center">Salary Differential Calculator</p>
+    <CalculatorVue/>
+</div>
+
 </template>
 
 <script>
+  import CalculatorVue from '@/components/Calculator.vue'
+
   export default {
-    name: "app",
-    mounted() {
-      document.title = "Salary Differential Calculator"
-    }
+    components: {CalculatorVue}
+
   }
 </script>
 <style>
