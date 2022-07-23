@@ -17,6 +17,7 @@
         <p>Net Amount: {{netAmount}}</p>
         <p>Start of Month: {{}}</p>
         <p>Start of Month: {{datesEqual.checkFirstDate}}</p>
+        <p>Start of Month: {{datesEqual.checkSecondDate}}</p>
       </form>
     </div>
   </section>
@@ -73,12 +74,11 @@ export default {
 
 
       const datesEqual = computed(() => {
-        // check first date of the month
-        // firstDate.value = dayjs(firstDate.value).format('MM/DD/YYYY')
         firstDayOfFirstDate.value = dayjs(firstDate.value).startOf('month').format('YYYY-MM-DD')
+        firstDayOfSecondDate.value = dayjs(secondDate.value).startOf('month').format('YYYY-MM-DD')
         const checkFirstDate = firstDayOfFirstDate.value === firstDate.value
-        console.log(firstDayOfFirstDate.value, firstDate.value)
-        return {checkFirstDate}
+        const checkSecondDate = firstDayOfSecondDate.value === secondDate.value
+        return {checkFirstDate, checkSecondDate}
       })
  
 
