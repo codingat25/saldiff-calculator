@@ -15,7 +15,8 @@
         <p>Withholding Tax: {{withholdingTax}}</p>
         <p>Total Deduction: {{totalDeduction}}</p>
         <p>Net Amount: {{netAmount}}</p>
-        <p>Start of Month: {{calculate}}</p>
+        <p>Start of Month: {{}}</p>
+        <p>Start of Month: {{datesEqual.checkFirstDate}}</p>
       </form>
     </div>
   </section>
@@ -57,7 +58,6 @@ export default {
       const firstDayOfSecondDate = ref('')
       const lastDayOfSecondDate = ref('')
       const differenceInMonths = ref('')
-      const checkFirstDate = ref('')
       const checkSecondDate = ref('')
       const businessDaysFirstDate = ref('')
       const businessDaysSecondDate = ref('')
@@ -72,19 +72,22 @@ export default {
       const taxPercentage = ref('')
 
 
-      const calculate = computed(() => {
+      const datesEqual = computed(() => {
         // check first date of the month
-        firstDayOfFirstDate.value = dayjs(firstDate.value).startOf('month').format('MM/DD/YYYY')
-        return [firstDayOfFirstDate]
+        // firstDate.value = dayjs(firstDate.value).format('MM/DD/YYYY')
+        firstDayOfFirstDate.value = dayjs(firstDate.value).startOf('month').format('YYYY-MM-DD')
+        const checkFirstDate = firstDayOfFirstDate.value === firstDate.value
+        console.log(firstDayOfFirstDate.value, firstDate.value)
+        return {checkFirstDate}
       })
-
+ 
 
       return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, initialDifferentialAmount, firstDate, secondDate,
                 calculatedDifferential, sdBonus, grossSalDiff, gsis, lessGsis, withholdingTax, totalDeduction,
                 netAmount, firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate,
-                differenceInMonths, checkFirstDate, checkSecondDate, businessDaysFirstDate, businessDaysSecondDate,
+                differenceInMonths, checkSecondDate, businessDaysFirstDate, businessDaysSecondDate,
                 businessDaysOfBothDates, fullMonthBusinessDaysOfFirstDate, fullMonthBusinessDaysOfSecondDate,
-                midYearRule, yearEndRule, getYear, gsisPS, gsisGS, taxPercentage, calculate}
+                midYearRule, yearEndRule, getYear, gsisPS, gsisGS, taxPercentage, datesEqual}
   }
 }
 
