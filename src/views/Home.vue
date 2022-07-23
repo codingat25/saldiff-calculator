@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+    <p class="align-center p-20">Welcome</p>
 </template>
 
 <script>
