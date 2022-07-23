@@ -16,8 +16,8 @@
         <p>Total Deduction: {{totalDeduction}}</p>
         <p>Net Amount: {{netAmount}}</p>
         <p>Start of Month: {{}}</p>
-        <p>Start of Month: {{datesEqual.checkFirstDate}}</p>
-        <p>Start of Month: {{datesEqual.checkSecondDate}}</p>
+        <p>Start of Month: {{calculate.checkSecondDate}}</p>
+        <p>Start of Month: {{calculate.checkFirstDate}}</p>
       </form>
     </div>
   </section>
@@ -73,13 +73,30 @@ export default {
       const taxPercentage = ref('')
 
 
-      const datesEqual = computed(() => {
+      
+      const calculate = computed(() => {
+        //check the 1st and last day of the given month
         firstDayOfFirstDate.value = dayjs(firstDate.value).startOf('month').format('YYYY-MM-DD')
+        lastDayOfFirstDate.value = dayjs(firstDate.value).endOf('months').format('YYYY-MM-DD')
         firstDayOfSecondDate.value = dayjs(secondDate.value).startOf('month').format('YYYY-MM-DD')
+        lastDayOfSecondDate.value = dayjs(secondDate.value).endOf('months').format('YYYY-MM-DD')
         const checkFirstDate = firstDayOfFirstDate.value === firstDate.value
-        const checkSecondDate = firstDayOfSecondDate.value === secondDate.value
-        return {checkFirstDate, checkSecondDate}
+        const checkSecondDate = lastDayOfSecondDate.value === secondDate.value
+
+        //check the difference between two dates
+              if(checkFirstDate && checkSecondDate) {
+                differenceInMonths.value = dayjs(secondDate.value).diff(firstDate.value,"month")+1
+              } else {
+                differenceInMonths.value = dayjs(secondDate.value).diff(firstDate.value,"month")
+              }
+        
+        
+
+        return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
+                checkFirstDate, checkSecondDate,differenceInMonths}
       })
+
+
  
 
       return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, initialDifferentialAmount, firstDate, secondDate,
@@ -87,7 +104,7 @@ export default {
                 netAmount, firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate,
                 differenceInMonths, checkSecondDate, businessDaysFirstDate, businessDaysSecondDate,
                 businessDaysOfBothDates, fullMonthBusinessDaysOfFirstDate, fullMonthBusinessDaysOfSecondDate,
-                midYearRule, yearEndRule, getYear, gsisPS, gsisGS, taxPercentage, datesEqual}
+                midYearRule, yearEndRule, getYear, gsisPS, gsisGS, taxPercentage, calculate}
   }
 }
 
