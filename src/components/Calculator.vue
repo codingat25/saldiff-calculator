@@ -79,8 +79,7 @@ export default {
         const checkFirstDate = firstDayOfFirstDate.value === firstDate.value
         const checkSecondDate = lastDayOfSecondDate.value === secondDate.value
 
-
-        //check the difference between two dates
+        //check the difference of calendar days between two dates
               if(checkFirstDate && checkSecondDate) {
                 differenceInMonths.value = dayjs(secondDate.value).diff(firstDate.value,"month")+1
               } else {
@@ -92,8 +91,8 @@ export default {
         businessDaysSecondDate.value = dayjs(secondDate.value).businessDiff(dayjs(firstDayOfSecondDate.value))+1
 
         //calculate calendar days between two dates
-        const totalCalendarDaysFirst = dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day")
-        const totalCalendarDaysSecond = dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day")
+        const totalCalendarDaysFirst = dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day")+1
+        const totalCalendarDaysSecond = dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day")+1
         console.log(totalCalendarDaysFirst, totalCalendarDaysSecond)
 
         return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
