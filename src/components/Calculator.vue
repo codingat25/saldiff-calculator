@@ -93,7 +93,14 @@ export default {
         //calculate calendar days between two dates
         const totalCalendarDaysFirst = dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day")+1
         const totalCalendarDaysSecond = dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day")+1
-        console.log(totalCalendarDaysFirst, totalCalendarDaysSecond)
+        const totalCalendarDaysofFirstSecond = dayjs(secondDate.value).diff(firstDate.value,"day")+1
+        const fullMonthOfFirstDay = dayjs(lastDayOfFirstDate.value).diff(firstDayOfFirstDate.value,"day")+1
+        const fullMonthOfSecondDay = dayjs(lastDayOfSecondDate.value).diff(firstDayOfSecondDate.value,"day")+1
+        console.log(totalCalendarDaysFirst, totalCalendarDaysSecond, totalCalendarDaysofFirstSecond, fullMonthOfFirstDay,
+        fullMonthOfSecondDay)
+
+        //mid-year and year-end rule
+        
 
         return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
                 checkFirstDate, checkSecondDate,differenceInMonths, businessDaysFirstDate, businessDaysSecondDate}
