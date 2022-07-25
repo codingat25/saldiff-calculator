@@ -2,8 +2,8 @@
   <section id="mainform" class="flex justify-center items-center w-screen h-screen border border-gray-300">
     <div class="h-screen w-screen md:w-4/6 md:h-4/6  border border-gray-500">
       <form @submit.prevent="handleSubmit" class="flex flex-col h-full w-full">
-        <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="properSalary">
         <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="currentSalary">
+        <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="properSalary">
         <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="initialDifferentialAmount">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="firstDate">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="secondDate">
@@ -41,9 +41,9 @@ export default {
       const lName = ref(' ')
       const position = ref('')
       const dateOfLastProm = ref('')
-      const properSalary = ref('')
-      const currentSalary = ref('')
-      const initialDifferentialAmount = ref('')
+      const properSalary = ref(null)
+      const currentSalary = ref(null)
+      const initialDifferentialAmount = ref(null)
       const firstDate = ref('')
       const secondDate = ref('')
       const calculatedDifferential = ref('')
@@ -61,13 +61,7 @@ export default {
       const differenceInMonths = ref('')
       const businessDaysFirstDate = ref('')
       const businessDaysSecondDate = ref('')
-      const midYearRule = ref('')
-      const yearEndRule = ref('')
-      const getYear = ref('')
-      const gsisPS = ref('')
-      const gsisGS = ref('')
-      const taxPercentage = ref('')
-
+      const tax = ref(0)
 
       
       const calculate = computed(() => {
@@ -96,11 +90,33 @@ export default {
         const totalCalendarDaysofFirstSecond = dayjs(secondDate.value).diff(firstDate.value,"day")+1
         const fullMonthOfFirstDay = dayjs(lastDayOfFirstDate.value).diff(firstDayOfFirstDate.value,"day")+1
         const fullMonthOfSecondDay = dayjs(lastDayOfSecondDate.value).diff(firstDayOfSecondDate.value,"day")+1
-        console.log(totalCalendarDaysFirst, totalCalendarDaysSecond, totalCalendarDaysofFirstSecond, fullMonthOfFirstDay,
-        fullMonthOfSecondDay)
 
         //mid-year and year-end rule
+        const getYear = dayjs(firstDate.value).year().toString()
+        const midYearRule = getYear.concat("-05-15")
+        const yearEndRule = getYear.concat("-10-31")
+
+        //gsis percentage
+        const gsisPS = 0.09
+        const gsisGS = 0.12
+
+        //tax computation
+        if(properSalary.value*12 <= 250000){
+          tax.value = 0
+        } else if (properSalary.value*12 >= 250001 && properSalary.value*12 <=400000){
+          tax.value = 0.20
+        } else if (properSalary.value*12 >=400001 && properSalary.value*12 <= 800000){
+          tax.value = 0.25
+        } else if (properSalary.value*12 >=400001 && properSalary.value*12 <= 800000){
+          tax.value = 0.25
+        } else if (properSalary.value*12 >=800001 && properSalary.value*12 <= 2000000){
+          tax.value = 0.30
+        } else if (properSalary.value*12 >=2000000 && properSalary.value*12 <= 8000000){
+          tax.value = 0.32
+        }
+
         
+
 
         return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
                 checkFirstDate, checkSecondDate,differenceInMonths, businessDaysFirstDate, businessDaysSecondDate}
@@ -112,8 +128,7 @@ export default {
       return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, 
                 initialDifferentialAmount, firstDate, secondDate, calculatedDifferential, sdBonus, grossSalDiff, gsis, 
                 lessGsis, withholdingTax, totalDeduction, netAmount, firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, 
-                lastDayOfSecondDate, differenceInMonths, midYearRule, yearEndRule, getYear, gsisPS, gsisGS, taxPercentage, 
-                calculate}
+                lastDayOfSecondDate, differenceInMonths, tax, calculate}
   }
 }
 
