@@ -7,17 +7,14 @@
         <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="initialDifferentialAmount">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="firstDate">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="secondDate">
-        <p>Calculated Amount:{{calculatedDifferential}}</p>
-        <p>SD Bonus: {{sdBonus}}</p>
-        <p>Gross: {{grossSalDiff}}</p>
+        <p>Calculated Amount:{{calculate.calculatedDifferential}}</p>
+        <p>SD Bonus: {{calculate.sdBonus}}</p>
+        <p>Gross: {{calculate.grossSalDiff}}</p>
         <p>GSIS: {{gsis}}</p>
         <p>Less GSIS: {{lessGsis}}</p>
         <p>Withholding Tax: {{withholdingTax}}</p>
         <p>Total Deduction: {{totalDeduction}}</p>
         <p>Net Amount: {{netAmount}}</p>
-        <p>Start of Month: {{}}</p>
-        <p>Start of Month: {{calculate.checkSecondDate}}</p>
-        <p>Start of Month: {{calculate.checkFirstDate}}</p>
       </form>
     </div>
   </section>
@@ -41,13 +38,13 @@ export default {
       const lName = ref(' ')
       const position = ref('')
       const dateOfLastProm = ref('')
-      const properSalary = ref(null)
-      const currentSalary = ref(null)
-      const initialDifferentialAmount = ref(null)
+      const properSalary = ref(0)
+      const currentSalary = ref(0)
+      const initialDifferentialAmount = ref(0)
       const firstDate = ref('')
       const secondDate = ref('')
-      const calculatedDifferential = ref('')
-      const sdBonus = ref('')
+      const calculatedDifferential = ref(0)
+      const sdBonus = ref(0)
       const grossSalDiff = ref('')
       const gsis = ref('')
       const lessGsis = ref('')
@@ -61,6 +58,8 @@ export default {
       const differenceInMonths = ref('')
       const businessDaysFirstDate = ref('')
       const businessDaysSecondDate = ref('')
+      const midYearEligible = ref('')
+      const yearEndEligible = ref('')
       const tax = ref(0)
 
       
@@ -93,8 +92,22 @@ export default {
 
         //mid-year and year-end rule
         const getYear = dayjs(firstDate.value).year().toString()
-        const midYearRule = getYear.concat("-05-15")
-        const yearEndRule = getYear.concat("-10-31")
+        const midYearDate = getYear.concat("-05-15")
+        const yearEndDate = getYear.concat("-10-31")
+
+        //mid-year
+        if(firstDate.value <= midYearDate && secondDate.value >= midYearDate){
+          midYearEligible.value = true
+        } else {
+          midYearEligible.value = false
+        }
+
+        //year-end
+        if(firstDate.value <= yearEndDate && secondDate.value >= yearEndDate){
+          yearEndEligible.value = true
+        } else {
+          yearEndEligible.value = false
+        }
 
         //gsis percentage
         const gsisPS = 0.09
@@ -115,17 +128,39 @@ export default {
           tax.value = 0.32
         }
 
+        //salary differential
+        initialDifferentialAmount.value = properSalary.value - currentSalary.value
+
+        if(checkFirstDate && checkSecondDate) {
+          calculatedDifferential.value = initialDifferentialAmount.value * differenceInMonths.value
+        } else if (checkFirstDate === true && checkSecondDate === false) {
+          calculatedDifferential.value = (initialDifferentialAmount.value/22*businessDaysSecondDate.value)+(initialDifferentialAmount.value * differenceInMonths.value)
+        } else if (checkFirstDate === false && checkSecondDate === true) {
+          calculatedDifferential.value = (initialDifferentialAmount.value/22*businessDaysFirstDate.value)+(initialDifferentialAmount.value * differenceInMonths.value) 
+        } else if (checkFirstDate === false && checkSecondDate === false) {
+          calculatedDifferential.value = ((initialDifferentialAmount.value/22*businessDaysSecondDate.value)+(initialDifferentialAmount.value * differenceInMonths.value)+
+          (initialDifferentialAmount.value/22*businessDaysFirstDate.value)+(initialDifferentialAmount.value * differenceInMonths.value)+
+          initialDifferentialAmount.value * differenceInMonths.value)
+        }
         
+
+        //calculate sd bonus
+        if(midYearEligible.value  && yearEndEligible.value) {
+          sdBonus.value = initialDifferentialAmount.value * 2
+        } else if (midYearEligible.value || yearEndEligible.value) {
+          sdBonus.value = initialDifferentialAmount.value
+        }
+
+        //gross salary differential
+        grossSalDiff.value = calculatedDifferential.value + sdBonus.value
 
 
         return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
-                checkFirstDate, checkSecondDate,differenceInMonths, businessDaysFirstDate, businessDaysSecondDate}
+                checkFirstDate, checkSecondDate,differenceInMonths, businessDaysFirstDate, businessDaysSecondDate,
+                initialDifferentialAmount, calculatedDifferential, sdBonus, grossSalDiff}
       })
 
-
- 
-
-      return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, 
+        return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, 
                 initialDifferentialAmount, firstDate, secondDate, calculatedDifferential, sdBonus, grossSalDiff, gsis, 
                 lessGsis, withholdingTax, totalDeduction, netAmount, firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, 
                 lastDayOfSecondDate, differenceInMonths, tax, calculate}
