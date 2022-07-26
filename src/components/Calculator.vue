@@ -4,13 +4,19 @@
       <form @submit.prevent="handleSubmit" class="flex flex-col h-full w-full">
         <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="currentSalary">
         <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="properSalary">
-        <input class="p-1 border border-gray-200" type="number" required placeholder="" v-model="initialDifferentialAmount">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="firstDate">
         <input class="p-5 border border-gray-200" type="date" required placeholder="" v-model="secondDate">
-        <p>Calculated Amount:{{calculate.calculatedDifferential}}</p>
+        
+        <p>Current Salary (a):{{currentSalary}}</p>
+        <p>Actual Salary (b): {{properSalary}}</p>
+        <p>Amount (b-a): {{initialDifferentialAmount}}</p>
+        <p>Period Covered (from): {{firstDate}}</p>
+        <p>Period Covered (to): {{secondDate}}</p>
+        <p>Gross Salary Differential:{{calculate.calculatedDifferential}}</p>
         <p>SD Bonus: {{calculate.sdBonus}}</p>
-        <p>Gross: {{calculate.grossSalDiff}}</p>
-        <p>GSIS: {{gsis}}</p>
+        <p>Gross SD + SD Bonus: {{calculate.grossSalDiff}}</p>
+        <p>GSIS Personal Share (PS): {{gsisPshare}}</p>
+        <p>GSIS Government Share (GS): {{gsisGshare}}</p>
         <p>Less GSIS: {{lessGsis}}</p>
         <p>Withholding Tax: {{withholdingTax}}</p>
         <p>Total Deduction: {{totalDeduction}}</p>
@@ -46,7 +52,8 @@ export default {
       const calculatedDifferential = ref('')
       const sdBonus = ref()
       const grossSalDiff = ref('')
-      const gsis = ref('')
+      const gsisPshare = ref('')
+      const gsisGshare = ref('')
       const lessGsis = ref('')
       const withholdingTax = ref('')
       const totalDeduction = ref('')
@@ -60,7 +67,7 @@ export default {
       const businessDaysSecondDate = ref('')
       const midYearEligible = ref('')
       const yearEndEligible = ref('')
-      const tax = ref(0)
+      const taxPercentage = ref('')
 
       
       const calculate = computed(() => {
@@ -115,17 +122,17 @@ export default {
 
         //tax computation
         if(properSalary.value*12 <= 250000){
-          tax.value = 0
+          taxPercentage.value = 0
         } else if (properSalary.value*12 >= 250001 && properSalary.value*12 <=400000){
-          tax.value = 0.20
+          taxPercentage.value = 0.20
         } else if (properSalary.value*12 >=400001 && properSalary.value*12 <= 800000){
-          tax.value = 0.25
+          taxPercentage.value = 0.25
         } else if (properSalary.value*12 >=400001 && properSalary.value*12 <= 800000){
-          tax.value = 0.25
+          taxPercentage.value = 0.25
         } else if (properSalary.value*12 >=800001 && properSalary.value*12 <= 2000000){
-          tax.value = 0.30
+          taxPercentage.value = 0.30
         } else if (properSalary.value*12 >=2000000 && properSalary.value*12 <= 8000000){
-          tax.value = 0.32
+          taxPercentage.value = 0.32
         }
 
         //salary differential
@@ -143,7 +150,6 @@ export default {
           initialDifferentialAmount.value * differenceInMonths.value)
         }
         
-
         //calculate sd bonus
         if(midYearEligible.value  && yearEndEligible.value) {
           sdBonus.value = initialDifferentialAmount.value * 2
@@ -154,6 +160,52 @@ export default {
         //gross salary differential
         grossSalDiff.value = calculatedDifferential.value + sdBonus.value
 
+        //gsis computation 
+        if(checkFirstDate === true && checkSecondDate === true) {
+
+          gsisPshare.value = initialDifferentialAmount.value * differenceInMonths.value * gsisPS 
+          gsisGshare.value = initialDifferentialAmount.value * differenceInMonths.value * gsisGS 
+
+        } else if (checkFirstDate === false && checkSecondDate === true) {
+
+          gsisPshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisPS) + 
+          ((initialDifferentialAmount.value/fullMonthOfFirstDay) * totalCalendarDaysFirst * gsisPS) 
+
+          gsisGshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisGS) + 
+          ((initialDifferentialAmount.value/fullMonthOfFirstDay) * totalCalendarDaysFirst * gsisGS) 
+
+        } else if (checkFirstDate === true && checkSecondDate === false) {
+
+          gsisPshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisPS) + 
+          ((initialDifferentialAmount.value/fullMonthOfSecondDay) * totalCalendarDaysSecond * gsisPS) 
+
+          gsisGshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisGS) + 
+          ((initialDifferentialAmount.value/fullMonthOfSecondDay) * totalCalendarDaysSecond * gsisGS) 
+
+        } else if (checkFirstDate === false && checkSecondDate === false) {
+
+          gsisPshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisPS) + 
+          ((initialDifferentialAmount.value/fullMonthOfFirstDay) * totalCalendarDaysFirst * gsisPS) +
+          ((initialDifferentialAmount.value/fullMonthOfSecondDay) * totalCalendarDaysSecond * gsisPS) 
+
+          gsisGshare.value = (initialDifferentialAmount.value * differenceInMonths.value * gsisGS) + 
+          ((initialDifferentialAmount.value/fullMonthOfFirstDay) * totalCalendarDaysFirst * gsisGS) +
+          ((initialDifferentialAmount.value/fullMonthOfSecondDay) * totalCalendarDaysSecond * gsisGS) 
+
+        } 
+
+        //less gsis
+        lessGsis.value = calculatedDifferential.value - gsisPshare.value
+
+        //witholding tax
+        withholdingTax.value = lessGsis.value * taxPercentage.value
+
+        //total deduction
+        totalDeduction.value = withholdingTax.value + gsisPshare.value
+
+        //net amount
+        netAmount.value = grossSalDiff.value - totalDeduction.value
+        console.log(gsisPshare.value, gsisGshare.value)
 
         return {firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, lastDayOfSecondDate, 
                 checkFirstDate, checkSecondDate,differenceInMonths, businessDaysFirstDate, businessDaysSecondDate,
@@ -161,9 +213,9 @@ export default {
       })
 
         return { dayjs,dayjsBusinessDays ,employeeNo,fName,lName,position,dateOfLastProm,properSalary, currentSalary, 
-                initialDifferentialAmount, firstDate, secondDate, calculatedDifferential, sdBonus, grossSalDiff, gsis, 
+                initialDifferentialAmount, firstDate, secondDate, calculatedDifferential, sdBonus, grossSalDiff, gsisPshare, gsisGshare,
                 lessGsis, withholdingTax, totalDeduction, netAmount, firstDayOfFirstDate, lastDayOfFirstDate, firstDayOfSecondDate, 
-                lastDayOfSecondDate, differenceInMonths, tax, calculate}
+                lastDayOfSecondDate, differenceInMonths, taxPercentage, calculate}
   }
 }
 
