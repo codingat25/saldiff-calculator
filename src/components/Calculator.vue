@@ -17,14 +17,14 @@
           type="number"
           required
           placeholder=""
-          v-model="currentSalary"
+          v-model.number="currentSalary"
         />
         <input
           class="p-1 border border-gray-200"
           type="number"
           required
           placeholder=""
-          v-model="properSalary"
+          v-model.number="properSalary"
         />
         <input
           class="p-5 border border-gray-200"
@@ -69,12 +69,12 @@ dayjs.extend(dayjsBusinessDays);
 
 export default {
   setup() {
-    const properSalary = ref("");
-    const currentSalary = ref("");
-    const firstDate = ref("");
-    const secondDate = ref("");
-    const gsisPshare = ref("");
-    const gsisGshare = ref("");
+    const properSalary = ref(null);
+    const currentSalary = ref(null);
+    const firstDate = ref(null);
+    const secondDate = ref(null);
+    const gsisPshare = ref(null);
+    const gsisGshare = ref(null);
 
     const initialDifferentialAmount = computed(() => {
       return properSalary.value - currentSalary.value;
@@ -260,6 +260,7 @@ export default {
       }
     });
 
+
     const sdBonus = computed(() => {
       if (midYearEligible.value && yearEndEligible.value) {
         return initialDifferentialAmount.value * 2;
@@ -353,16 +354,18 @@ export default {
     });
 
     const withholdingTax = computed(() => {
-      return (withholdingTax.value = lessGsis.value * taxPercentage.value);
+      return parseFloat(withholdingTax.value = lessGsis.value * taxPercentage.value).toFixed(2);
     });
 
     const totalDeduction = computed(() => {
-      return lessGsis.value + withholdingTax.value;
+      return parseFloat(lessGsis.value + withholdingTax.value).toFixed(2);
     });
 
     const netAmount = computed(() => {
-      return grossSalDiff.value - totalDeduction.value;
+      return parseFloat(grossSalDiff.value - totalDeduction.value).toFixed(2);
     });
+
+    
 
     // function handleSubmit() {
     //   //check the 1st and last day of the given month
@@ -500,15 +503,15 @@ export default {
     //   netAmount.value = grossSalDiff.value - totalDeduction.value
 
     //   initialDifferentialAmount.value = parseFloat(initialDifferentialAmount.value).toFixed(2)
-    //   calculatedDifferential.value = parseFloat(calculatedDifferential.value).toFixed(2)
-    //   sdBonus.value = parseFloat(sdBonus.value).toFixed(2)
-    //   grossSalDiff.value = parseFloat(grossSalDiff.value).toFixed(2)
-    //   gsisPshare.value = parseFloat(gsisPshare.value).toFixed(2)
-    //   gsisGshare.value = parseFloat(gsisGshare.value).toFixed(2)
-    //   lessGsis.value = parseFloat(lessGsis.value).toFixed(2)
-    //   withholdingTax.value = parseFloat(withholdingTax.value).toFixed(2)
-    //   totalDeduction.value = parseFloat(totalDeduction.value).toFixed(2)
-    //   netAmount.value = parseFloat(netAmount.value).toFixed(2)
+      // calculatedDifferential.value = parseFloat(calculatedDifferential.value).toFixed(2)
+      // sdBonus.value = parseFloat(sdBonus.value).toFixed(2)
+      // grossSalDiff.value = parseFloat(grossSalDiff.value).toFixed(2)
+      // gsisPshare.value = parseFloat(gsisPshare.value).toFixed(2)
+      // gsisGshare.value = parseFloat(gsisGshare.value).toFixed(2)
+      // lessGsis.value = parseFloat(lessGsis.value).toFixed(2)
+      // withholdingTax.value = parseFloat(withholdingTax.value).toFixed(2)
+      // totalDeduction.value = parseFloat(totalDeduction.value).toFixed(2)
+      // netAmount.value = parseFloat(netAmount.value).toFixed(2)
     // }
 
     return {
