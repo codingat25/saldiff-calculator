@@ -28,14 +28,14 @@
         />
         <input
           class="p-5 border border-gray-200"
-          type="date"
+          type="text"
           required
           placeholder=""
           v-model="firstDate"
         />
         <input
           class="p-5 border border-gray-200"
-          type="date"
+          type="text"
           required
           placeholder=""
           v-model="secondDate"
@@ -72,7 +72,7 @@ export default {
     const properSalary = ref(null);
     const currentSalary = ref(null);
     const firstDate = ref(null);
-    const secondDate = ref("");
+    const secondDate = ref(null);
 
     const initialDifferentialAmount = computed(() => {
       return properSalary.value - currentSalary.value;
@@ -80,41 +80,41 @@ export default {
 
     const firstDayOfFirstDate = computed(() => {
       if (
-        dayjs(firstDate.value).startOf("month").format("YYYY-MM-DD") ===
+        dayjs(firstDate.value).startOf("month").format("MM/DD/YYYY") ===
         "Invalid Date"
       ) {
         return 0;
       } else
-        return dayjs(firstDate.value).startOf("month").format("YYYY-MM-DD");
+        return dayjs(firstDate.value).startOf("month").format("MM/DD/YYYY");
     });
 
     const lastDayOfFirstDate = computed(() => {
       if (
-        dayjs(firstDate.value).endOf("month").format("YYYY-MM-DD") ===
+        dayjs(firstDate.value).endOf("month").format("MM/DD/YYYY") ===
         "Invalid Date"
       ) {
         return 0;
-      } else return dayjs(firstDate.value).endOf("month").format("YYYY-MM-DD");
+      } else return dayjs(firstDate.value).endOf("month").format("MM/DD/YYYY");
     });
 
     const firstDayOfSecondDate = computed(() => {
       if (
-        dayjs(secondDate.value).startOf("month").format("YYYY-MM-DD") ===
+        dayjs(secondDate.value).startOf("month").format("MM/DD/YYYY") ===
         "Invalid Date"
       ) {
         return 0;
       } else
-        return dayjs(secondDate.value).startOf("month").format("YYYY-MM-DD");
+        return dayjs(secondDate.value).startOf("month").format("MM/DD/YYYY");
     });
 
     const lastDayOfSecondDate = computed(() => {
       if (
-        dayjs(secondDate.value).endOf("months").format("YYYY-MM-DD") ===
+        dayjs(secondDate.value).endOf("months").format("MM/DD/YYYY") ===
         "Invalid Date"
       ) {
         return 0;
       } else
-        return dayjs(secondDate.value).endOf("months").format("YYYY-MM-DD");
+        return dayjs(secondDate.value).endOf("months").format("MM/DD/YYYY");
     });
 
     const checkFirstDate = computed(() => {
@@ -132,9 +132,9 @@ export default {
         (checkFirstDate.value === true && checkSecondDate.value === false) ||
         (checkFirstDate.value === false && checkSecondDate.value === true)
       ) {
-        return dayjs(secondDate.value).diff(firstDate.value, "month") + 1;
+        return dayjs(secondDate.value).diff(firstDate.value, "month")
       } else return 0;
-    }); console.log(differenceInMonths.value)
+    }); 
 
     const businessDaysFirstDate = computed(() => {
       return dayjs(lastDayOfFirstDate.value).businessDiff(
@@ -176,78 +176,82 @@ export default {
       );
     });
 
-    // const getYear = computed(() => {
-    //   return dayjs(firstDate.value).year().toString();
-    // });
+    const getYear = computed(() => {
+      if (firstDate.value === null) {
+        return 0
+      } else {
+      return dayjs(firstDate.value).year().toString();
+      }
+    }); 
 
-    // const midYearDate = computed(() => {
-    //   return getYear.value.concat("-05-15");
-    // });
+    const midYearDate = computed(() => {
+      return getYear.value.concat("-05-15");
+    });
 
-    // const yearEndDate = computed(() => {
-    //   return getYear.value.concat("-10-31");
-    // });
+    const yearEndDate = computed(() => {
+      return getYear.value.concat("-10-31");
+    });
 
-    // const midYearEligible = computed(() => {
-    //   if (
-    //     firstDate.value <= midYearDate.value &&
-    //     secondDate.value >= midYearDate.value
-    //   ) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
+    const midYearEligible = computed(() => {
+      if (
+        firstDate.value <= midYearDate.value &&
+        secondDate.value >= midYearDate.value
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
 
-    // const yearEndEligible = computed(() => {
-    //   if (
-    //     firstDate.value <= yearEndDate.value &&
-    //     secondDate.value >= yearEndDate.value
-    //   ) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
+    const yearEndEligible = computed(() => {
+      if (
+        firstDate.value <= yearEndDate.value &&
+        secondDate.value >= yearEndDate.value
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
 
-    // const gsisPS = computed(() => {
-    //   return 0.09;
-    // });
+    const gsisPS = computed(() => {
+      return 0.09;
+    });
 
-    // const gsisGS = computed(() => {
-    //   return 0.12;
-    // });
+    const gsisGS = computed(() => {
+      return 0.12;
+    });
 
-    // const taxPercentage = computed(() => {
-    //   if (properSalary.value * 12 <= 250000) {
-    //     return 0;
-    //   } else if (
-    //     properSalary.value * 12 >= 250001 &&
-    //     properSalary.value * 12 <= 400000
-    //   ) {
-    //     return 0.2;
-    //   } else if (
-    //     properSalary.value * 12 >= 400001 &&
-    //     properSalary.value * 12 <= 800000
-    //   ) {
-    //     return 0.25;
-    //   } else if (
-    //     properSalary.value * 12 >= 400001 &&
-    //     properSalary.value * 12 <= 800000
-    //   ) {
-    //     return 0.25;
-    //   } else if (
-    //     properSalary.value * 12 >= 800001 &&
-    //     properSalary.value * 12 <= 2000000
-    //   ) {
-    //     return 0.3;
-    //   } else if (
-    //     properSalary.value * 12 >= 2000000 &&
-    //     properSalary.value * 12 <= 8000000
-    //   ) {
-    //     return 0.32;
-    //   }
-    // });
+    const taxPercentage = computed(() => {
+      if (properSalary.value * 12 <= 250000) {
+        return 0;
+      } else if (
+        properSalary.value * 12 >= 250001 &&
+        properSalary.value * 12 <= 400000
+      ) {
+        return 0.2;
+      } else if (
+        properSalary.value * 12 >= 400001 &&
+        properSalary.value * 12 <= 800000
+      ) {
+        return 0.25;
+      } else if (
+        properSalary.value * 12 >= 400001 &&
+        properSalary.value * 12 <= 800000
+      ) {
+        return 0.25;
+      } else if (
+        properSalary.value * 12 >= 800001 &&
+        properSalary.value * 12 <= 2000000
+      ) {
+        return 0.3;
+      } else if (
+        properSalary.value * 12 >= 2000000 &&
+        properSalary.value * 12 <= 8000000
+      ) {
+        return 0.32;
+      }
+    });
 
     const calculatedDifferential = computed(() => {
       if (checkFirstDate.value && checkSecondDate.value) {
@@ -284,19 +288,14 @@ export default {
       }
     });
 
-    // const sdBonus = computed({
-    //   get() {
-    //     if (midYearEligible.value && yearEndEligible.value) {
-    //       return initialDifferentialAmount.value * 2;
-    //     } else if (midYearEligible.value || yearEndEligible.value) {
-    //       return initialDifferentialAmount.value;
-    //     }
-    //   },
-    //   set(newValue) {
-    //     newValue;
-    //   },
-    // });
-    // sdBonus.value = 0;
+    const sdBonus = computed(()=>{
+        if (midYearEligible.value && yearEndEligible.value) {
+          return initialDifferentialAmount.value * 2;
+        } else if (midYearEligible.value || yearEndEligible.value) {
+          return initialDifferentialAmount.value;
+        }
+    }); 
+
 
     // const grossSalDiff = computed({
     //   get() {
