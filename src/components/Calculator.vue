@@ -52,8 +52,8 @@
         <p>GSIS Personal Share (PS): {{ gsisPshare.toFixed(2) }}</p>
         <p>GSIS Government Share (GS): {{ gsisGshare.toFixed(2) }}</p>
         <p>Less GSIS: {{ lessGsis.toFixed(2) }}</p>
-        <p>Withholding Tax: {{ parseFloat(withholdingTax).toFixed(2) }}</p>
-        <p>Total Deduction: {{ parseFloat(totalDeduction).toFixed(2) }}</p>
+        <p>Withholding Tax: {{ withholdingTax.toFixed(2) }}</p>
+        <p>Total Deduction: {{ totalDeduction.toFixed(2) }}</p>
         <p>Net Amount: {{ netAmount.toFixed(2) }}</p>
       </form>
     </div>
@@ -64,19 +64,24 @@
 import { ref, computed } from "vue";
 import dayjs from "dayjs";
 import dayjsBusinessDays from "dayjs-business-days";
-import { is } from "@babel/types";
 
 dayjs.extend(dayjsBusinessDays);
 
 export default {
   setup() {
-    const properSalary = ref(null);
     const currentSalary = ref(null);
-    const firstDate = ref("");
-    const secondDate = ref("");
+    const properSalary = ref(null);
+    const firstDate = ref(""); //automatically format first date to mm/dd/yyyy
+    const secondDate = ref(""); //automatically format second date to mm/dd/yyyy
+    
 
     const initialDifferentialAmount = computed(() => {
+      if (properSalary.value - currentSalary.value <= 0) {
+        return 0
+      } else {
       return properSalary.value - currentSalary.value;
+      }
+
     });
 
     const firstDayOfFirstDate = computed(() => {
@@ -106,7 +111,7 @@ export default {
         return 0;
       } else
         return dayjs(secondDate.value).startOf("month").format("MM/DD/YYYY");
-    });
+    }); 
 
     const lastDayOfSecondDate = computed(() => {
       if (
@@ -116,7 +121,7 @@ export default {
         return 0;
       } else
         return dayjs(secondDate.value).endOf("months").format("MM/DD/YYYY");
-    });
+    }); 
 
     const checkFirstDate = computed(() => {
       return firstDayOfFirstDate.value === firstDate.value;
@@ -124,7 +129,7 @@ export default {
 
     const checkSecondDate = computed(() => {
       return lastDayOfSecondDate.value === secondDate.value;
-    });
+    }); 
 
     const differenceInMonths = computed(() => {
       if (checkFirstDate.value && checkSecondDate.value) {
@@ -140,8 +145,8 @@ export default {
     const businessDaysFirstDate = computed(() => {
       return dayjs(lastDayOfFirstDate.value).businessDiff(
         dayjs(firstDate.value)
-      );
-    });
+      ) 
+    }); //there's a bug in here!!!
 
     const businessDaysSecondDate = computed(() => {
       return (
@@ -149,7 +154,7 @@ export default {
           dayjs(firstDayOfSecondDate.value)
         ) + 1
       );
-    });
+    }); 
 
     const totalCalendarDaysFirst = computed(() => {
       if(isNaN(dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1) === true) {
@@ -157,7 +162,7 @@ export default {
       } else {
       return dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1;
       }
-    });
+    }); 
 
     const totalCalendarDaysSecond = computed(() => {
       if(isNaN(dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1) === true) {
@@ -166,7 +171,7 @@ export default {
       else {
         return dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
       }
-    });
+    }); 
 
     const fullMonthOfFirstDay = computed(() => {
       return (
@@ -198,7 +203,7 @@ export default {
 
     const yearEndDate = computed(() => {
       return "10/31/".concat(getYear.value);
-    });
+    }); 
 
     const midYearEligible = computed(() => {
       if (
@@ -262,7 +267,7 @@ export default {
     });
 
     const calculatedDifferential = computed(() => {
-      if (checkFirstDate.value && checkSecondDate.value) {
+       if (checkFirstDate.value && checkSecondDate.value) {
         return initialDifferentialAmount.value * differenceInMonths.value;
       } else if (
         checkFirstDate.value === true &&
@@ -277,10 +282,12 @@ export default {
         checkFirstDate.value === false &&
         checkSecondDate.value === true
       ) {
+        console.log("this one was called")
+        console.log(initialDifferentialAmount.value, businessDaysFirstDate.value, differenceInMonths.value)
         return (
           (initialDifferentialAmount.value / 22) * businessDaysFirstDate.value +
           initialDifferentialAmount.value * differenceInMonths.value
-        );
+        ) ;
       } else if (
         checkFirstDate.value === false &&
         checkSecondDate.value === false
@@ -294,10 +301,10 @@ export default {
           initialDifferentialAmount.value * differenceInMonths.value
         );
       }
-    });
+    }); 
 
     const sdBonus = computed(()=>{
-        if (midYearEligible.value && yearEndEligible.value) {
+          if (midYearEligible.value && yearEndEligible.value) {
           return initialDifferentialAmount.value * 2;
         } else if (midYearEligible.value || yearEndEligible.value) {
           return initialDifferentialAmount.value;
