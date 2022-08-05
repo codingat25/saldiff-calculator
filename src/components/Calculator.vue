@@ -16,28 +16,28 @@
           class="p-1 border border-gray-200"
           type="number"
           required
-          placeholder="0"
+          placeholder="Current Salary"
           v-model.number="currentSalary"
         />
         <input
           class="p-1 border border-gray-200"
           type="number"
           required
-          placeholder="0"
+          placeholder="Proper Salary"
           v-model.number="properSalary"
         />
         <input
           class="p-5 border border-gray-200"
           type="text"
           required
-          placeholder=""
+          placeholder="First Date"
           v-model="firstDate"
         />
         <input
           class="p-5 border border-gray-200"
           type="text"
           required
-          placeholder=""
+          placeholder="Second Date"
           v-model="secondDate"
         />
 
@@ -47,14 +47,14 @@
         <p>Period Covered (from): {{ firstDate }}</p>
         <p>Period Covered (to): {{ secondDate }}</p>
         <p>Gross Salary Differential:{{ calculatedDifferential.toFixed(2) }}</p>
-        <!-- <p>SD Bonus:{{ parseFloat(sdBonus).toFixed(2) }}</p>
+        <p>SD Bonus:{{ parseFloat(sdBonus).toFixed(2) }}</p>
         <p>Gross SD + SD Bonus: {{ grossSalDiff.toFixed(2) }}</p>
         <p>GSIS Personal Share (PS): {{ gsisPshare.toFixed(2) }}</p>
         <p>GSIS Government Share (GS): {{ gsisGshare.toFixed(2) }}</p>
         <p>Less GSIS: {{ lessGsis.toFixed(2) }}</p>
         <p>Withholding Tax: {{ parseFloat(withholdingTax).toFixed(2) }}</p>
         <p>Total Deduction: {{ parseFloat(totalDeduction).toFixed(2) }}</p>
-        <p>Net Amount: {{ netAmount.toFixed(2) }}</p> -->
+        <p>Net Amount: {{ netAmount.toFixed(2) }}</p>
       </form>
     </div>
   </section>
@@ -64,6 +64,7 @@
 import { ref, computed } from "vue";
 import dayjs from "dayjs";
 import dayjsBusinessDays from "dayjs-business-days";
+import { is } from "@babel/types";
 
 dayjs.extend(dayjsBusinessDays);
 
@@ -71,8 +72,8 @@ export default {
   setup() {
     const properSalary = ref(null);
     const currentSalary = ref(null);
-    const firstDate = ref(null);
-    const secondDate = ref(null);
+    const firstDate = ref("");
+    const secondDate = ref("");
 
     const initialDifferentialAmount = computed(() => {
       return properSalary.value - currentSalary.value;
@@ -151,13 +152,20 @@ export default {
     });
 
     const totalCalendarDaysFirst = computed(() => {
+      if(isNaN(dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1) === true) {
+        return 0
+      } else {
       return dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1;
+      }
     });
 
     const totalCalendarDaysSecond = computed(() => {
-      return (
-        dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
-      );
+      if(isNaN(dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1) === true) {
+        return 0
+      }
+      else {
+        return dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
+      }
     });
 
     const fullMonthOfFirstDay = computed(() => {
@@ -185,11 +193,11 @@ export default {
     }); 
 
     const midYearDate = computed(() => {
-      return getYear.value.concat("-05-15");
-    });
+      return "05/15/".concat(getYear.value);
+    }); 
 
     const yearEndDate = computed(() => {
-      return getYear.value.concat("-10-31");
+      return "10/31/".concat(getYear.value);
     });
 
     const midYearEligible = computed(() => {
@@ -293,133 +301,129 @@ export default {
           return initialDifferentialAmount.value * 2;
         } else if (midYearEligible.value || yearEndEligible.value) {
           return initialDifferentialAmount.value;
+        } else if (midYearEligible.value === false && yearEndEligible.value === false) {
+          return 0
         }
     }); 
 
 
-    // const grossSalDiff = computed({
-    //   get() {
-    //     return calculatedDifferential.value + sdBonus.value;
-    //   },
-    //   set(newValue) {
-    //     newValue;
-    //   },
-    // });
-    // grossSalDiff.value = 0;
+    const grossSalDiff = computed(()=> {
+        return calculatedDifferential.value + sdBonus.value;
+    });
 
-    // const gsisPshare = computed(() => {
-    //   if (checkFirstDate.value === true && checkSecondDate.value === true) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //       differenceInMonths.value *
-    //       gsisPS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === false &&
-    //     checkSecondDate.value === true
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisPS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-    //         totalCalendarDaysFirst.value *
-    //         gsisPS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === true &&
-    //     checkSecondDate.value === false
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisPS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-    //         totalCalendarDaysSecond.value *
-    //         gsisPS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === false &&
-    //     checkSecondDate.value === false
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisPS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-    //         totalCalendarDaysFirst.value *
-    //         gsisPS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-    //         totalCalendarDaysSecond.value *
-    //         gsisPS.value
-    //     );
-    //   }
-    // });
+    const gsisPshare = computed(() => {
+      if (checkFirstDate.value === true && checkSecondDate.value === true) {
+        return (
+          initialDifferentialAmount.value *
+          differenceInMonths.value *
+          gsisPS.value
+        );
+      } else if (
+        checkFirstDate.value === false &&
+        checkSecondDate.value === true
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisPS.value +
+          (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
+            totalCalendarDaysFirst.value *
+            gsisPS.value
+        );
+      } else if (
+        checkFirstDate.value === true &&
+        checkSecondDate.value === false
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisPS.value +
+          (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
+            totalCalendarDaysSecond.value *
+            gsisPS.value
+        );
+      } else if (
+        checkFirstDate.value === false &&
+        checkSecondDate.value === false
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisPS.value +
+          (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
+            totalCalendarDaysFirst.value *
+            gsisPS.value +
+          (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
+            totalCalendarDaysSecond.value *
+            gsisPS.value
+        );
+      }
+    }); 
 
-    // const gsisGshare = computed(() => {
-    //   if (checkFirstDate.value === true && checkSecondDate.value === true) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //       differenceInMonths.value *
-    //       gsisGS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === false &&
-    //     checkSecondDate.value === true
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisGS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-    //         totalCalendarDaysFirst.value *
-    //         gsisGS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === true &&
-    //     checkSecondDate.value === false
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisGS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-    //         totalCalendarDaysSecond.value *
-    //         gsisGS.value
-    //     );
-    //   } else if (
-    //     checkFirstDate.value === false &&
-    //     checkSecondDate.value === false
-    //   ) {
-    //     return (
-    //       initialDifferentialAmount.value *
-    //         differenceInMonths.value *
-    //         gsisGS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-    //         totalCalendarDaysFirst.value *
-    //         gsisGS.value +
-    //       (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-    //         totalCalendarDaysSecond.value *
-    //         gsisGS.value
-    //     );
-    //   }
-    // });
+    const gsisGshare = computed(() => {
+      if (checkFirstDate.value === true && checkSecondDate.value === true) {
+        return (
+          initialDifferentialAmount.value *
+          differenceInMonths.value *
+          gsisGS.value
+        );
+      } else if (
+        checkFirstDate.value === false &&
+        checkSecondDate.value === true
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisGS.value +
+          (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
+            totalCalendarDaysFirst.value *
+            gsisGS.value
+        );
+      } else if (
+        checkFirstDate.value === true &&
+        checkSecondDate.value === false
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisGS.value +
+          (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
+            totalCalendarDaysSecond.value *
+            gsisGS.value
+        );
+      } else if (
+        checkFirstDate.value === false &&
+        checkSecondDate.value === false
+      ) {
+        return (
+          initialDifferentialAmount.value *
+            differenceInMonths.value *
+            gsisGS.value +
+          (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
+            totalCalendarDaysFirst.value *
+            gsisGS.value +
+          (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
+            totalCalendarDaysSecond.value *
+            gsisGS.value
+        );
+      }
+    });
 
-    // const lessGsis = computed(() => {
-    //   return calculatedDifferential.value - gsisPshare.value;
-    // });
+    const lessGsis = computed(() => {
+      return calculatedDifferential.value - gsisPshare.value;
+    });
 
-    // const withholdingTax = computed(() => {
-    //   return (withholdingTax.value = lessGsis.value * taxPercentage.value);
-    // });
+    const withholdingTax = computed(() => {
+      return lessGsis.value * taxPercentage.value;
+    });
 
-    // const totalDeduction = computed(() => {
-    //   return gsisPshare.value + withholdingTax.value;
-    // });
+    const totalDeduction = computed(() => {
+      return gsisPshare.value + withholdingTax.value;
+    });
 
-    // const netAmount = computed(() => {
-    //   return grossSalDiff.value - totalDeduction.value;
-    // });
+    const netAmount = computed(() => {
+      return grossSalDiff.value - totalDeduction.value;
+    });
 
     return {
       dayjs,
@@ -430,14 +434,14 @@ export default {
       firstDate,
       secondDate,
       calculatedDifferential,
-      // sdBonus,
-      // grossSalDiff,
-      // gsisPshare,
-      // gsisGshare,
-      // lessGsis,
-      // withholdingTax,
-      // totalDeduction,
-      // netAmount,
+      sdBonus,
+      grossSalDiff,
+      gsisPshare,
+      gsisGshare,
+      lessGsis,
+      withholdingTax,
+      totalDeduction,
+      netAmount
     };
   },
 };
