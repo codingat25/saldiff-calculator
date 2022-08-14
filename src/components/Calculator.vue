@@ -46,15 +46,16 @@
         <p>Amount (b-a): {{ initialDifferentialAmount }}</p>
         <p>Period Covered (from): {{ firstDate }}</p>
         <p>Period Covered (to): {{ secondDate }}</p>
-        <p>Gross Salary Differential:{{ calculatedDifferential.toFixed(2) }}</p>
-        <p>SD Bonus:{{ parseFloat(sdBonus).toFixed(2) }}</p>
-        <p>Gross SD + SD Bonus: {{ grossSalDiff.toFixed(2) }}</p>
-        <p>GSIS Personal Share (PS): {{ gsisPshare.toFixed(2) }}</p>
-        <p>GSIS Government Share (GS): {{ gsisGshare.toFixed(2) }}</p>
-        <p>Less GSIS: {{ lessGsis.toFixed(2) }}</p>
-        <p>Withholding Tax: {{ withholdingTax.toFixed(2) }}</p>
-        <p>Total Deduction: {{ totalDeduction.toFixed(2) }}</p>
-        <p>Net Amount: {{ netAmount.toFixed(2) }}</p>
+        <p>Gross Salary Differential:{{ calculatedDifferential }}</p>
+        <p>SD Bonus:{{ sdBonus }}</p>
+        <p>Gross SD + SD Bonus: {{ grossSalDiff }}</p>
+        <p>GSIS Personal Share (PS): {{ gsisPshare}}</p>
+        <p>GSIS Government Share (GS): {{ gsisGshare }}</p>
+        <p>Less GSIS: {{ lessGsis }}</p>
+        <p>Withholding Tax: {{ withholdingTax }}</p>
+        <p>Total Deduction: {{totalDeduction }}</p>
+        <p>Net Amount: {{ netAmount }}</p>
+
       </form>
     </div>
   </section>
@@ -63,25 +64,26 @@
 <script>
 import { ref, computed } from "vue";
 import dayjs from "dayjs";
-import dayjsBusinessDays from "dayjs-business-days";
+import dayjsBusinessDays from "dayjs-business-days2";
 
 dayjs.extend(dayjsBusinessDays);
+
+//business days arent returning the right numbers 
+// try this one tomorrow instead https://www.npmjs.com/package/dayjs-business-days2
 
 export default {
   setup() {
     const currentSalary = ref(null);
     const properSalary = ref(null);
-    const firstDate = ref(""); //automatically format first date to mm/dd/yyyy
-    const secondDate = ref(""); //automatically format second date to mm/dd/yyyy
+    const firstDate = ref("11/11/2021"); //automatically format first date to mm/dd/yyyy
+    const secondDate = ref("12/31/2021"); //automatically format second date to mm/dd/yyyy
     
-
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
         return 0
       } else {
       return properSalary.value - currentSalary.value;
       }
-
     });
 
     const firstDayOfFirstDate = computed(() => {
@@ -92,7 +94,7 @@ export default {
         return 0;
       } else
         return dayjs(firstDate.value).startOf("month").format("MM/DD/YYYY");
-    });
+    }); 
 
     const lastDayOfFirstDate = computed(() => {
       if (
@@ -101,7 +103,7 @@ export default {
       ) {
         return 0;
       } else return dayjs(firstDate.value).endOf("month").format("MM/DD/YYYY");
-    });
+    }); 
 
     const firstDayOfSecondDate = computed(() => {
       if (
@@ -125,7 +127,7 @@ export default {
 
     const checkFirstDate = computed(() => {
       return firstDayOfFirstDate.value === firstDate.value;
-    });
+    }); 
 
     const checkSecondDate = computed(() => {
       return lastDayOfSecondDate.value === secondDate.value;
@@ -142,19 +144,6 @@ export default {
       } else return 0;
     }); 
 
-    const businessDaysFirstDate = computed(() => {
-      return dayjs(lastDayOfFirstDate.value).businessDiff(
-        dayjs(firstDate.value)
-      ) 
-    }); //there's a bug in here!!!
-
-    const businessDaysSecondDate = computed(() => {
-      return (
-        dayjs(secondDate.value).businessDiff(
-          dayjs(firstDayOfSecondDate.value)
-        ) + 1
-      );
-    }); 
 
     const totalCalendarDaysFirst = computed(() => {
       if(isNaN(dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1) === true) {
@@ -162,7 +151,8 @@ export default {
       } else {
       return dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1;
       }
-    }); 
+    });  
+
 
     const totalCalendarDaysSecond = computed(() => {
       if(isNaN(dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1) === true) {
@@ -204,6 +194,52 @@ export default {
     const yearEndDate = computed(() => {
       return "10/31/".concat(getYear.value);
     }); 
+
+    const getMonthOfFirstDay = computed(()=> {
+      return dayjs(firstDate.value).month()+1
+    })
+
+    const getDayOfFirstDate = computed(()=> {
+      return dayjs(firstDate.value).date()
+    })
+
+    const getDayOfLastDateOfFirstDate = computed(()=> {
+      return dayjs(lastDayOfFirstDate.value).date()
+    }) 
+
+    const getMonthOfSecondDay = computed(()=> {
+      return dayjs(secondDate.value).month()+1
+    })
+
+    const getDayOfSecondDate = computed(()=> {
+      return dayjs(secondDate.value).date()
+    })
+
+    const getDayOfFirstDateOfSecondDate = computed(()=> {
+      return dayjs(firstDayOfSecondDate.value).date()
+    }) 
+    
+
+    const businessDaysFirstDate = function (){
+      const arrayedDates = []
+      for(let i=getDayOfFirstDateOfSecondDate.value; i<=getDayOfSecondDate.value; i++){
+        arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`)
+      }
+      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
+      return allTrue.length
+    }
+
+    const businessDaysSecondDate = function (){
+      const arrayedDates = []
+      for(let i=getDayOfSecondDate.value; i<=getDayOfLastDateOfSecondDate.value; i++){
+        arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`)
+      }
+      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
+      return allTrue.length
+    }
+
+    console.log(businessDaysSecondDate())
+
 
     const midYearEligible = computed(() => {
       if (
@@ -282,8 +318,6 @@ export default {
         checkFirstDate.value === false &&
         checkSecondDate.value === true
       ) {
-        console.log("this one was called")
-        console.log(initialDifferentialAmount.value, businessDaysFirstDate.value, differenceInMonths.value)
         return (
           (initialDifferentialAmount.value / 22) * businessDaysFirstDate.value +
           initialDifferentialAmount.value * differenceInMonths.value
