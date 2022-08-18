@@ -41,20 +41,116 @@
           v-model="secondDate"
         />
 
-        <p>Current Salary (a): {{ currentSalaryFormatted }}</p>
-        <p>Actual Salary (b): {{ properSalaryFormatted }}</p>
-        <p>Amount (b-a): {{ initialDifferentialAmountFormatted }}</p>
+        <p>
+          Current Salary (a):
+          {{
+            formattedcurrentSalary.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Actual Salary (b):
+          {{
+            formattedproperSalary.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Amount (b-a):
+          {{
+            formattedinitialDifferentialAmount.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
         <p>Period Covered (from): {{ firstDate }}</p>
         <p>Period Covered (to): {{ secondDate }}</p>
-        <p>Gross Salary Differential: {{ calculatedDifferentialFormatted }}</p>
-        <p>SD Bonus: {{ sdBonusFormatted }}</p>
-        <p>Gross SD + SD Bonus: {{ grossSalDiffFormatted }}</p>
-        <p>GSIS Personal Share (PS): {{ gsisPshareFormatted }}</p>
-        <p>GSIS Government Share (GS): {{ gsisGshareFormatted }}</p>
-        <p>Less GSIS: {{ lessGsisFormatted }}</p>
-        <p>Withholding Tax: {{ withholdingTaxFormatted }}</p>
-        <p>Total Deduction: {{ totalDeduction }}</p>
-        <p>Net Amount: {{ netAmount }}</p>
+        <p>
+          Gross Salary Differential:
+          {{
+            formattedcalculatedDifferential.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          SD Bonus:
+          {{
+            formattedsdBonus.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Gross SD + SD Bonus:
+          {{
+            formattedgrossSalDiff.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          GSIS Personal Share (PS):
+          {{
+            formattedgsisPshare.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          GSIS Government Share (GS):
+          {{
+            formattedgsisGshare.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Less GSIS:
+          {{
+            formattedlessGsis.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Withholding Tax:
+          {{
+            formattedwithholdingTax.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Total Deduction:
+          {{
+            totalDeduction.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
+        <p>
+          Net Amount:
+          {{
+            netAmount.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }}
+        </p>
       </form>
     </div>
   </section>
@@ -64,6 +160,7 @@
 import { ref, computed } from "vue";
 import dayjs from "dayjs";
 import dayjsBusinessDays from "dayjs-business-days2";
+import { round } from "mathjs/number";
 
 dayjs.extend(dayjsBusinessDays);
 
@@ -309,10 +406,7 @@ export default {
         properSalary.value * 12 <= 2000000
       ) {
         return 0.3;
-      } else if (
-        properSalary.value * 12 >= 2000000 &&
-        properSalary.value * 12 <= 8000000
-      ) {
+      } else if (properSalary.value * 12 >= 2000001) {
         return 0.32;
       }
     });
@@ -475,74 +569,44 @@ export default {
       return lessGsis.value * taxPercentage.value;
     });
 
-    const properSalaryFormatted = computed(() => {
-      return properSalary.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
+    const formattedproperSalary = computed(() => {
+      return round(properSalary.value, 2);
+    });
 
-    const currentSalaryFormatted = computed(() => {
-      return currentSalary.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-    
-    const initialDifferentialAmountFormatted = computed(() => {
-      return initialDifferentialAmount.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-
-    const calculatedDifferentialFormatted = computed(() => {
-      return calculatedDifferential.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-
-    const sdBonusFormatted = computed(() => {
-      return sdBonus.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-    const grossSalDiffFormatted = computed(() => {
-      return grossSalDiff.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-    const gsisPshareFormatted = computed(() => {
-      return gsisPshare.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-    const gsisGshareFormatted = computed(() => {
-      return gsisGshare.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-    const lessGsisFormatted = computed(() => {
-      return lessGsis.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
-
-    const withholdingTaxFormatted = computed(() => {
-      return withholdingTax.value.toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })});
+    const formattedcurrentSalary = computed(() => {
+      return round(currentSalary.value, 2);
+    });
+    const formattedinitialDifferentialAmount = computed(() => {
+      return round(initialDifferentialAmount.value, 2);
+    });
+    const formattedcalculatedDifferential = computed(() => {
+      return round(calculatedDifferential.value, 2);
+    });
+    const formattedsdBonus = computed(() => {
+      return round(sdBonus.value, 2);
+    });
+    const formattedgrossSalDiff = computed(() => {
+      return round(grossSalDiff.value, 2);
+    });
+    const formattedgsisPshare = computed(() => {
+      return round(gsisPshare.value, 2);
+    });
+    const formattedgsisGshare = computed(() => {
+      return round(gsisGshare.value, 2);
+    });
+    const formattedlessGsis = computed(() => {
+      return round(lessGsis.value, 2);
+    });
+    const formattedwithholdingTax = computed(() => {
+      return round(withholdingTax.value, 2);
+    });
 
     const totalDeduction = computed(() => {
-      return gsisPshareFormatted.value + withholdingTaxFormatted.value;
+      return formattedgsisPshare.value + formattedwithholdingTax.value;
     });
 
     const netAmount = computed(() => {
-      return grossSalDiffFormatted.value - totalDeduction.value;
+      return round(formattedgrossSalDiff.value - totalDeduction.value, 3);
     });
 
     return {
@@ -550,18 +614,18 @@ export default {
       dayjsBusinessDays,
       properSalary,
       currentSalary,
-      properSalaryFormatted,
-      currentSalaryFormatted,
-      initialDifferentialAmountFormatted,
+      formattedproperSalary,
+      formattedcurrentSalary,
+      formattedinitialDifferentialAmount,
       firstDate,
       secondDate,
-      calculatedDifferentialFormatted,
-      sdBonusFormatted,
-      grossSalDiffFormatted,
-      gsisPshareFormatted,
-      gsisGshareFormatted,
-      lessGsisFormatted,
-      withholdingTaxFormatted,
+      formattedcalculatedDifferential,
+      formattedsdBonus,
+      formattedgrossSalDiff,
+      formattedgsisPshare,
+      formattedgsisGshare,
+      formattedlessGsis,
+      formattedwithholdingTax,
       totalDeduction,
       netAmount,
     };
