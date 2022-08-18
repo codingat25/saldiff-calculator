@@ -41,21 +41,20 @@
           v-model="secondDate"
         />
 
-        <p>Current Salary (a):{{ currentSalary }}</p>
-        <p>Actual Salary (b): {{ properSalary }}</p>
-        <p>Amount (b-a): {{ initialDifferentialAmount }}</p>
+        <p>Current Salary (a): {{ currentSalaryFormatted }}</p>
+        <p>Actual Salary (b): {{ properSalaryFormatted }}</p>
+        <p>Amount (b-a): {{ initialDifferentialAmountFormatted }}</p>
         <p>Period Covered (from): {{ firstDate }}</p>
         <p>Period Covered (to): {{ secondDate }}</p>
-        <p>Gross Salary Differential:{{ calculatedDifferential }}</p>
-        <p>SD Bonus:{{ sdBonus }}</p>
-        <p>Gross SD + SD Bonus: {{ grossSalDiff }}</p>
-        <p>GSIS Personal Share (PS): {{ gsisPshare}}</p>
-        <p>GSIS Government Share (GS): {{ gsisGshare }}</p>
-        <p>Less GSIS: {{ lessGsis }}</p>
-        <p>Withholding Tax: {{ withholdingTax }}</p>
-        <p>Total Deduction: {{totalDeduction }}</p>
+        <p>Gross Salary Differential: {{ calculatedDifferentialFormatted }}</p>
+        <p>SD Bonus: {{ sdBonusFormatted }}</p>
+        <p>Gross SD + SD Bonus: {{ grossSalDiffFormatted }}</p>
+        <p>GSIS Personal Share (PS): {{ gsisPshareFormatted }}</p>
+        <p>GSIS Government Share (GS): {{ gsisGshareFormatted }}</p>
+        <p>Less GSIS: {{ lessGsisFormatted }}</p>
+        <p>Withholding Tax: {{ withholdingTaxFormatted }}</p>
+        <p>Total Deduction: {{ totalDeduction }}</p>
         <p>Net Amount: {{ netAmount }}</p>
-
       </form>
     </div>
   </section>
@@ -68,19 +67,18 @@ import dayjsBusinessDays from "dayjs-business-days2";
 
 dayjs.extend(dayjsBusinessDays);
 
-
 export default {
   setup() {
-    const currentSalary = ref(null);
-    const properSalary = ref(null);
+    const currentSalary = ref(0);
+    const properSalary = ref(0);
     const firstDate = ref(""); //automatically format first date to mm/dd/yyyy
     const secondDate = ref(""); //automatically format second date to mm/dd/yyyy
-    
+
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
-        return 0
+        return 0;
       } else {
-      return properSalary.value - currentSalary.value;
+        return properSalary.value - currentSalary.value;
       }
     });
 
@@ -92,7 +90,7 @@ export default {
         return 0;
       } else
         return dayjs(firstDate.value).startOf("month").format("MM/DD/YYYY");
-    }); 
+    });
 
     const lastDayOfFirstDate = computed(() => {
       if (
@@ -101,7 +99,7 @@ export default {
       ) {
         return 0;
       } else return dayjs(firstDate.value).endOf("month").format("MM/DD/YYYY");
-    }); 
+    });
 
     const firstDayOfSecondDate = computed(() => {
       if (
@@ -111,7 +109,7 @@ export default {
         return 0;
       } else
         return dayjs(secondDate.value).startOf("month").format("MM/DD/YYYY");
-    }); 
+    });
 
     const lastDayOfSecondDate = computed(() => {
       if (
@@ -121,15 +119,15 @@ export default {
         return 0;
       } else
         return dayjs(secondDate.value).endOf("months").format("MM/DD/YYYY");
-    }); 
+    });
 
     const checkFirstDate = computed(() => {
       return firstDayOfFirstDate.value === firstDate.value;
-    }); 
+    });
 
     const checkSecondDate = computed(() => {
       return lastDayOfSecondDate.value === secondDate.value;
-    }); 
+    });
 
     const differenceInMonths = computed(() => {
       if (checkFirstDate.value && checkSecondDate.value) {
@@ -138,34 +136,42 @@ export default {
         (checkFirstDate.value === true && checkSecondDate.value === false) ||
         (checkFirstDate.value === false && checkSecondDate.value === true)
       ) {
-        return dayjs(secondDate.value).diff(firstDate.value, "month")
+        return dayjs(secondDate.value).diff(firstDate.value, "month");
       } else return 0;
-    }); 
+    });
 
     const totalCalendarDaysFirst = computed(() => {
-      if(isNaN(dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1) === true) {
-        return 0
+      if (
+        isNaN(
+          dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1
+        ) === true
+      ) {
+        return 0;
       } else {
-      return dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1;
+        return dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1;
       }
-    });  
-
+    });
 
     const totalCalendarDaysSecond = computed(() => {
-      if(isNaN(dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1) === true) {
-        return 0
+      if (
+        isNaN(
+          dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
+        ) === true
+      ) {
+        return 0;
+      } else {
+        return (
+          dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
+        );
       }
-      else {
-        return dayjs(secondDate.value).diff(firstDayOfSecondDate.value, "day") + 1
-      }
-    }); 
+    });
 
     const fullMonthOfFirstDay = computed(() => {
       return (
         dayjs(lastDayOfFirstDate.value).diff(firstDayOfFirstDate.value, "day") +
         1
       );
-    }); 
+    });
 
     const fullMonthOfSecondDay = computed(() => {
       return (
@@ -174,70 +180,82 @@ export default {
           "day"
         ) + 1
       );
-    }); 
+    });
 
     const getYear = computed(() => {
       if (firstDate.value === null) {
-        return 0
+        return 0;
       } else {
-      return dayjs(firstDate.value).year().toString();
+        return dayjs(firstDate.value).year().toString();
       }
-    }); 
+    });
 
     const midYearDate = computed(() => {
       return "05/15/".concat(getYear.value);
-    }); 
+    });
 
     const yearEndDate = computed(() => {
       return "10/31/".concat(getYear.value);
-    }); 
+    });
 
-    const getMonthOfFirstDay = computed(()=> {
-      return dayjs(firstDate.value).month()+1
-    }) 
+    const getMonthOfFirstDay = computed(() => {
+      return dayjs(firstDate.value).month() + 1;
+    });
 
-    const getDayOfFirstDate = computed(()=> {
-      return dayjs(firstDate.value).date()
-    })
+    const getDayOfFirstDate = computed(() => {
+      return dayjs(firstDate.value).date();
+    });
 
-    const getDayOfLastDateOfFirstDate = computed(()=> {
-      return dayjs(lastDayOfFirstDate.value).date()
-    }) 
+    const getDayOfLastDateOfFirstDate = computed(() => {
+      return dayjs(lastDayOfFirstDate.value).date();
+    });
 
-    const getMonthOfSecondDay = computed(()=> {
-      return dayjs(secondDate.value).month()+1
-    })
+    const getMonthOfSecondDay = computed(() => {
+      return dayjs(secondDate.value).month() + 1;
+    });
 
-    const getDayOfSecondDate = computed(()=> {
-      return dayjs(secondDate.value).date()
-    })
+    const getDayOfSecondDate = computed(() => {
+      return dayjs(secondDate.value).date();
+    });
 
-    const getDayOfFirstDateOfSecondDate = computed(()=> {
-      return dayjs(firstDayOfSecondDate.value).date()
-    }) 
+    const getDayOfFirstDateOfSecondDate = computed(() => {
+      return dayjs(firstDayOfSecondDate.value).date();
+    });
 
-    const getDayOfLastDateOfSecondDate = computed(()=> {
-      return dayjs(lastDayOfSecondDate.value).date()
-    }) 
-    
-    const businessDaysFirstDate = computed(()=> {
-      const arrayedDates = []
-      for(let i=getDayOfFirstDate.value; i<=getDayOfLastDateOfFirstDate.value; i++){
-        arrayedDates.push(`${getMonthOfFirstDay.value}/${i}/${getYear.value}`)
+    const getDayOfLastDateOfSecondDate = computed(() => {
+      return dayjs(lastDayOfSecondDate.value).date();
+    });
+
+    const businessDaysFirstDate = computed(() => {
+      const arrayedDates = [];
+      for (
+        let i = getDayOfFirstDate.value;
+        i <= getDayOfLastDateOfFirstDate.value;
+        i++
+      ) {
+        arrayedDates.push(`${getMonthOfFirstDay.value}/${i}/${getYear.value}`);
       }
-      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
-      return allTrue.length
-    })
+      const allTrue = arrayedDates.filter((arrayed) =>
+        dayjs(arrayed).isBusinessDay()
+      );
+      return allTrue.length;
+    });
 
-    const businessDaysSecondDate = computed(()=> {
-      const arrayedDates = []
-      for(let i=getDayOfFirstDateOfSecondDate.value; i<=getDayOfSecondDate.value; i++){
-        arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`)
+    const businessDaysSecondDate = computed(() => {
+      const arrayedDates = [];
+      for (
+        let i = getDayOfFirstDateOfSecondDate.value;
+        i <= getDayOfSecondDate.value;
+        i++
+      ) {
+        arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`);
       }
-      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
-      return allTrue.length
-    }) 
-    
+      const allTrue = arrayedDates.filter((arrayed) =>
+        dayjs(arrayed).isBusinessDay()
+      );
+      return allTrue.length;
+    });
+
     const midYearEligible = computed(() => {
       if (
         firstDate.value <= midYearDate.value &&
@@ -300,7 +318,7 @@ export default {
     });
 
     const calculatedDifferential = computed(() => {
-       if (checkFirstDate.value && checkSecondDate.value) {
+      if (checkFirstDate.value && checkSecondDate.value) {
         return initialDifferentialAmount.value * differenceInMonths.value;
       } else if (
         checkFirstDate.value === true &&
@@ -318,7 +336,7 @@ export default {
         return (
           (initialDifferentialAmount.value / 22) * businessDaysFirstDate.value +
           initialDifferentialAmount.value * differenceInMonths.value
-        ) ;
+        );
       } else if (
         checkFirstDate.value === false &&
         checkSecondDate.value === false
@@ -332,21 +350,23 @@ export default {
           initialDifferentialAmount.value * differenceInMonths.value
         );
       }
-    }); 
+    });
 
-    const sdBonus = computed(()=>{
-          if (midYearEligible.value && yearEndEligible.value) {
-          return initialDifferentialAmount.value * 2;
-        } else if (midYearEligible.value || yearEndEligible.value) {
-          return initialDifferentialAmount.value;
-        } else if (midYearEligible.value === false && yearEndEligible.value === false) {
-          return 0
-        }
-    }); 
+    const sdBonus = computed(() => {
+      if (midYearEligible.value && yearEndEligible.value) {
+        return initialDifferentialAmount.value * 2;
+      } else if (midYearEligible.value || yearEndEligible.value) {
+        return initialDifferentialAmount.value;
+      } else if (
+        midYearEligible.value === false &&
+        yearEndEligible.value === false
+      ) {
+        return 0;
+      }
+    });
 
-
-    const grossSalDiff = computed(()=> {
-        return calculatedDifferential.value + sdBonus.value;
+    const grossSalDiff = computed(() => {
+      return calculatedDifferential.value + sdBonus.value;
     });
 
     const gsisPshare = computed(() => {
@@ -396,7 +416,7 @@ export default {
             gsisPS.value
         );
       }
-    }); 
+    });
 
     const gsisGshare = computed(() => {
       if (checkFirstDate.value === true && checkSecondDate.value === true) {
@@ -455,12 +475,74 @@ export default {
       return lessGsis.value * taxPercentage.value;
     });
 
+    const properSalaryFormatted = computed(() => {
+      return properSalary.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const currentSalaryFormatted = computed(() => {
+      return currentSalary.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+    
+    const initialDifferentialAmountFormatted = computed(() => {
+      return initialDifferentialAmount.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+
+    const calculatedDifferentialFormatted = computed(() => {
+      return calculatedDifferential.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+
+    const sdBonusFormatted = computed(() => {
+      return sdBonus.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const grossSalDiffFormatted = computed(() => {
+      return grossSalDiff.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const gsisPshareFormatted = computed(() => {
+      return gsisPshare.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const gsisGshareFormatted = computed(() => {
+      return gsisGshare.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const lessGsisFormatted = computed(() => {
+      return lessGsis.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
+    const withholdingTaxFormatted = computed(() => {
+      return withholdingTax.value.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })});
+
     const totalDeduction = computed(() => {
-      return gsisPshare.value + withholdingTax.value;
+      return gsisPshareFormatted.value + withholdingTaxFormatted.value;
     });
 
     const netAmount = computed(() => {
-      return grossSalDiff.value - totalDeduction.value;
+      return grossSalDiffFormatted.value - totalDeduction.value;
     });
 
     return {
@@ -468,18 +550,20 @@ export default {
       dayjsBusinessDays,
       properSalary,
       currentSalary,
-      initialDifferentialAmount,
+      properSalaryFormatted,
+      currentSalaryFormatted,
+      initialDifferentialAmountFormatted,
       firstDate,
       secondDate,
-      calculatedDifferential,
-      sdBonus,
-      grossSalDiff,
-      gsisPshare,
-      gsisGshare,
-      lessGsis,
-      withholdingTax,
+      calculatedDifferentialFormatted,
+      sdBonusFormatted,
+      grossSalDiffFormatted,
+      gsisPshareFormatted,
+      gsisGshareFormatted,
+      lessGsisFormatted,
+      withholdingTaxFormatted,
       totalDeduction,
-      netAmount
+      netAmount,
     };
   },
 };
