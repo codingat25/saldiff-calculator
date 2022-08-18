@@ -68,15 +68,13 @@ import dayjsBusinessDays from "dayjs-business-days2";
 
 dayjs.extend(dayjsBusinessDays);
 
-//business days arent returning the right numbers 
-// try this one tomorrow instead https://www.npmjs.com/package/dayjs-business-days2
 
 export default {
   setup() {
     const currentSalary = ref(null);
     const properSalary = ref(null);
-    const firstDate = ref("11/11/2021"); //automatically format first date to mm/dd/yyyy
-    const secondDate = ref("12/31/2021"); //automatically format second date to mm/dd/yyyy
+    const firstDate = ref(""); //automatically format first date to mm/dd/yyyy
+    const secondDate = ref(""); //automatically format second date to mm/dd/yyyy
     
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
@@ -144,7 +142,6 @@ export default {
       } else return 0;
     }); 
 
-
     const totalCalendarDaysFirst = computed(() => {
       if(isNaN(dayjs(lastDayOfFirstDate.value).diff(firstDate.value, "day") + 1) === true) {
         return 0
@@ -168,7 +165,7 @@ export default {
         dayjs(lastDayOfFirstDate.value).diff(firstDayOfFirstDate.value, "day") +
         1
       );
-    });
+    }); 
 
     const fullMonthOfSecondDay = computed(() => {
       return (
@@ -177,7 +174,7 @@ export default {
           "day"
         ) + 1
       );
-    });
+    }); 
 
     const getYear = computed(() => {
       if (firstDate.value === null) {
@@ -197,7 +194,7 @@ export default {
 
     const getMonthOfFirstDay = computed(()=> {
       return dayjs(firstDate.value).month()+1
-    })
+    }) 
 
     const getDayOfFirstDate = computed(()=> {
       return dayjs(firstDate.value).date()
@@ -218,29 +215,29 @@ export default {
     const getDayOfFirstDateOfSecondDate = computed(()=> {
       return dayjs(firstDayOfSecondDate.value).date()
     }) 
-    
 
-    const businessDaysFirstDate = function (){
+    const getDayOfLastDateOfSecondDate = computed(()=> {
+      return dayjs(lastDayOfSecondDate.value).date()
+    }) 
+    
+    const businessDaysFirstDate = computed(()=> {
+      const arrayedDates = []
+      for(let i=getDayOfFirstDate.value; i<=getDayOfLastDateOfFirstDate.value; i++){
+        arrayedDates.push(`${getMonthOfFirstDay.value}/${i}/${getYear.value}`)
+      }
+      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
+      return allTrue.length
+    })
+
+    const businessDaysSecondDate = computed(()=> {
       const arrayedDates = []
       for(let i=getDayOfFirstDateOfSecondDate.value; i<=getDayOfSecondDate.value; i++){
         arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`)
       }
       const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
       return allTrue.length
-    }
-
-    const businessDaysSecondDate = function (){
-      const arrayedDates = []
-      for(let i=getDayOfSecondDate.value; i<=getDayOfLastDateOfSecondDate.value; i++){
-        arrayedDates.push(`${getMonthOfSecondDay.value}/${i}/${getYear.value}`)
-      }
-      const allTrue = arrayedDates.filter(arrayed => dayjs(arrayed).isBusinessDay())
-      return allTrue.length
-    }
-
-    console.log(businessDaysSecondDate())
-
-
+    }) 
+    
     const midYearEligible = computed(() => {
       if (
         firstDate.value <= midYearDate.value &&
