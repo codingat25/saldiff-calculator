@@ -1,71 +1,43 @@
 <template>
-  <section
-    id="mainform"
-    class="
-      flex
-      justify-center
-      items-center
-      w-screen
-      h-screen
-      border border-gray-300
-    "
-  >
-    <div class="h-screen w-screen md:w-4/6 md:h-4/6 border border-gray-500">
-      <form @submit.prevent="" class="flex flex-col h-full w-full">
-        <input
-          class="p-1 border border-gray-200"
-          type="number"
-          required
-          placeholder="Current Salary"
-          v-model.number="currentSalary"
-        />
-        <input
-          class="p-1 border border-gray-200"
-          type="number"
-          required
-          placeholder="Proper Salary"
-          v-model.number="properSalary"
-        />
-        <input
-          class="p-5 border border-gray-200"
-          type="text"
-          required
-          placeholder="First Date"
-          v-model="firstDate"
-        />
-        <input
-          class="p-5 border border-gray-200"
-          type="text"
-          required
-          placeholder="Second Date"
-          v-model="secondDate"
-        />
+  <section id="mainform" class="flex justify-center bg-lightCyan">
+  <div class="flex justify-center items-center h-screen w-screen border border-red-500">
+    <div class="flex flex-col h-5/6 w-5/6 text-lg border border-red-500">
+      <form @submit.prevent="" class="flex justify-center">
+        <div class="flex justify-center flex-col w-5/6">
+        <input class="p-1 border border-gray-200" type="number" required placeholder="Current Salary"
+          v-model.number="currentSalary" />
+        <input class="p-1 border border-gray-200" type="number" required placeholder="Proper Salary"
+          v-model.number="properSalary" />
+        <input class="p-2 border border-gray-200" type="text" required placeholder="First Date" v-model="firstDate" />
+        <input class="p-2 border border-gray-200" type="text" required placeholder="Second Date" v-model="secondDate" />
+        </div>
+      </form>
 
-        <p>
+        <p class="">
           Current Salary (a):
           {{
-            formattedcurrentSalary.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedCurrentSalary.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Actual Salary (b):
           {{
-            formattedproperSalary.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedProperSalary.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Amount (b-a):
           {{
-            formattedinitialDifferentialAmount.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedInitialDifferentialAmount.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>Period Covered (from): {{ firstDate }}</p>
@@ -73,86 +45,87 @@
         <p>
           Gross Salary Differential:
           {{
-            formattedcalculatedDifferential.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedCalculatedDifferential.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           SD Bonus:
           {{
-            formattedsdBonus.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedSdBonus.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Gross SD + SD Bonus:
           {{
-            formattedgrossSalDiff.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedGrossSalDiff.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           GSIS Personal Share (PS):
           {{
-            formattedgsisPshare.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedGsisPshare.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           GSIS Government Share (GS):
           {{
-            formattedgsisGshare.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedGsisGshare.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Less GSIS:
           {{
-            formattedlessGsis.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedLessGsis.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Withholding Tax:
           {{
-            formattedwithholdingTax.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              formattedWithholdingTax.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Total Deduction:
           {{
-            totalDeduction.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              totalDeduction.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
         <p>
           Net Amount:
           {{
-            netAmount.toLocaleString("en-US", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
+              netAmount.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })
           }}
         </p>
-      </form>
     </div>
+  </div>
+
   </section>
 </template>
 
@@ -420,7 +393,7 @@ export default {
       ) {
         return (
           (initialDifferentialAmount.value / 22) *
-            businessDaysSecondDate.value +
+          businessDaysSecondDate.value +
           initialDifferentialAmount.value * differenceInMonths.value
         );
       } else if (
@@ -437,7 +410,7 @@ export default {
       ) {
         return (
           (initialDifferentialAmount.value / 22) *
-            businessDaysSecondDate.value +
+          businessDaysSecondDate.value +
           initialDifferentialAmount.value * differenceInMonths.value +
           (initialDifferentialAmount.value / 22) * businessDaysFirstDate.value +
           initialDifferentialAmount.value * differenceInMonths.value +
@@ -476,11 +449,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisPS.value +
+          differenceInMonths.value *
+          gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-            totalCalendarDaysFirst.value *
-            gsisPS.value
+          totalCalendarDaysFirst.value *
+          gsisPS.value
         );
       } else if (
         checkFirstDate.value === true &&
@@ -488,11 +461,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisPS.value +
+          differenceInMonths.value *
+          gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-            totalCalendarDaysSecond.value *
-            gsisPS.value
+          totalCalendarDaysSecond.value *
+          gsisPS.value
         );
       } else if (
         checkFirstDate.value === false &&
@@ -500,14 +473,14 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisPS.value +
+          differenceInMonths.value *
+          gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-            totalCalendarDaysFirst.value *
-            gsisPS.value +
+          totalCalendarDaysFirst.value *
+          gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-            totalCalendarDaysSecond.value *
-            gsisPS.value
+          totalCalendarDaysSecond.value *
+          gsisPS.value
         );
       }
     });
@@ -525,11 +498,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisGS.value +
+          differenceInMonths.value *
+          gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-            totalCalendarDaysFirst.value *
-            gsisGS.value
+          totalCalendarDaysFirst.value *
+          gsisGS.value
         );
       } else if (
         checkFirstDate.value === true &&
@@ -537,11 +510,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisGS.value +
+          differenceInMonths.value *
+          gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-            totalCalendarDaysSecond.value *
-            gsisGS.value
+          totalCalendarDaysSecond.value *
+          gsisGS.value
         );
       } else if (
         checkFirstDate.value === false &&
@@ -549,14 +522,14 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-            differenceInMonths.value *
-            gsisGS.value +
+          differenceInMonths.value *
+          gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-            totalCalendarDaysFirst.value *
-            gsisGS.value +
+          totalCalendarDaysFirst.value *
+          gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-            totalCalendarDaysSecond.value *
-            gsisGS.value
+          totalCalendarDaysSecond.value *
+          gsisGS.value
         );
       }
     });
@@ -569,44 +542,44 @@ export default {
       return lessGsis.value * taxPercentage.value;
     });
 
-    const formattedproperSalary = computed(() => {
+    const formattedProperSalary = computed(() => {
       return round(properSalary.value, 2);
     });
 
-    const formattedcurrentSalary = computed(() => {
+    const formattedCurrentSalary = computed(() => {
       return round(currentSalary.value, 2);
     });
-    const formattedinitialDifferentialAmount = computed(() => {
+    const formattedInitialDifferentialAmount = computed(() => {
       return round(initialDifferentialAmount.value, 2);
     });
-    const formattedcalculatedDifferential = computed(() => {
+    const formattedCalculatedDifferential = computed(() => {
       return round(calculatedDifferential.value, 2);
     });
-    const formattedsdBonus = computed(() => {
+    const formattedSdBonus = computed(() => {
       return round(sdBonus.value, 2);
     });
-    const formattedgrossSalDiff = computed(() => {
+    const formattedGrossSalDiff = computed(() => {
       return round(grossSalDiff.value, 2);
     });
-    const formattedgsisPshare = computed(() => {
+    const formattedGsisPshare = computed(() => {
       return round(gsisPshare.value, 2);
     });
-    const formattedgsisGshare = computed(() => {
+    const formattedGsisGshare = computed(() => {
       return round(gsisGshare.value, 2);
     });
-    const formattedlessGsis = computed(() => {
+    const formattedLessGsis = computed(() => {
       return round(lessGsis.value, 2);
     });
-    const formattedwithholdingTax = computed(() => {
+    const formattedWithholdingTax = computed(() => {
       return round(withholdingTax.value, 2);
     });
 
     const totalDeduction = computed(() => {
-      return formattedgsisPshare.value + formattedwithholdingTax.value;
+      return formattedGsisPshare.value + formattedWithholdingTax.value;
     });
 
     const netAmount = computed(() => {
-      return round(formattedgrossSalDiff.value - totalDeduction.value, 3);
+      return round(formattedGrossSalDiff.value - totalDeduction.value, 3);
     });
 
     return {
@@ -614,18 +587,18 @@ export default {
       dayjsBusinessDays,
       properSalary,
       currentSalary,
-      formattedproperSalary,
-      formattedcurrentSalary,
-      formattedinitialDifferentialAmount,
+      formattedProperSalary,
+      formattedCurrentSalary,
+      formattedInitialDifferentialAmount,
       firstDate,
       secondDate,
-      formattedcalculatedDifferential,
-      formattedsdBonus,
-      formattedgrossSalDiff,
-      formattedgsisPshare,
-      formattedgsisGshare,
-      formattedlessGsis,
-      formattedwithholdingTax,
+      formattedCalculatedDifferential,
+      formattedSdBonus,
+      formattedGrossSalDiff,
+      formattedGsisPshare,
+      formattedGsisGshare,
+      formattedLessGsis,
+      formattedWithholdingTax,
       totalDeduction,
       netAmount,
     };

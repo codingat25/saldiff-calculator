@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
+
+body {
+    font-family: "JetBrains Mono", sans-serif;
+}
+
+
 @tailwind utilities;
+

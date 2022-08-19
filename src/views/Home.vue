@@ -1,6 +1,6 @@
 <template>
 <div>
-    <p class="align-center">Salary Differential Calculator</p>
+    <p class="fixed flex w-screen justify-center text-xl bg-lightCyan border border-red-500">Salary Differential Calculator</p>
     <CalculatorVue/>
 </div>
 
