@@ -1,130 +1,149 @@
 <template>
   <section id="mainform" class="flex justify-center bg-lightCyan">
-  <div class="flex justify-center items-center h-screen w-screen border border-red-500">
-    <div class="flex flex-col h-5/6 w-5/6 text-lg border border-red-500">
-      <form @submit.prevent="" class="flex justify-center">
-        <div class="flex justify-center flex-col w-5/6">
-        <input class="p-1 border border-gray-200" type="number" required placeholder="Current Salary"
-          v-model.number="currentSalary" />
-        <input class="p-1 border border-gray-200" type="number" required placeholder="Proper Salary"
-          v-model.number="properSalary" />
-        <input class="p-2 border border-gray-200" type="text" required placeholder="First Date" v-model="firstDate" />
-        <input class="p-2 border border-gray-200" type="text" required placeholder="Second Date" v-model="secondDate" />
-        </div>
-      </form>
+    <div class="flex justify-center items-center h-screen w-screen">
+      <div
+        class="flex flex-col justify-center items-center h-screen w-screen space-y-5 overflow-auto">
+        <h1 class="font-black text-darkCyan text-2xl">STEP INCREMENT</h1>
+        <form @submit.prevent="" class="flex flex-col justify-center items-center space-y-5">
+          <div class="flex justify-center flex-col mx-11 w-5/6">
+            <input class="p-1 border border-gray-200" type="number" required placeholder="Current Salary"
+              v-model.number="currentSalary" />
+            <input class="p-1 border border-gray-200" type="number" required placeholder="Proper Salary"
+              v-model.number="properSalary" />
+            <input class="p-2 border border-gray-200" type="text" required placeholder="First Date"
+              v-model="firstDate" />
+            <input class="p-2 border border-gray-200" type="text" required placeholder="Second Date"
+              v-model="secondDate" />
+          </div>
+          <div class="flex text-sm">
+            <div class="">
+              <p class="">
+                Current Salary:<br>
+                {{
+                    formattedCurrentSalary.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Actual Salary:<br>
+                {{
+                    formattedProperSalary.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Difference:<br>
+                {{
+                    formattedInitialDifferentialAmount.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>Period Covered (from):<br>
+                {{ firstDate }}</p>
+              <p>Period Covered (to):<br>
+                {{ secondDate }}</p>
+              <p>
+                Gross Salary Differential:<br>
+                {{
+                    formattedCalculatedDifferential.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                SD Bonus:<br>
+                {{
+                    formattedSdBonus.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Gross SD + SD Bonus:<br>
+                {{
+                    formattedGrossSalDiff.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
 
-        <p class="">
-          Current Salary (a):
-          {{
-              formattedCurrentSalary.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Actual Salary (b):
-          {{
-              formattedProperSalary.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Amount (b-a):
-          {{
-              formattedInitialDifferentialAmount.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>Period Covered (from): {{ firstDate }}</p>
-        <p>Period Covered (to): {{ secondDate }}</p>
-        <p>
-          Gross Salary Differential:
-          {{
-              formattedCalculatedDifferential.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          SD Bonus:
-          {{
-              formattedSdBonus.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Gross SD + SD Bonus:
-          {{
-              formattedGrossSalDiff.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          GSIS Personal Share (PS):
-          {{
-              formattedGsisPshare.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          GSIS Government Share (GS):
-          {{
-              formattedGsisGshare.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Less GSIS:
-          {{
-              formattedLessGsis.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Withholding Tax:
-          {{
-              formattedWithholdingTax.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Total Deduction:
-          {{
-              totalDeduction.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
-        <p>
-          Net Amount:
-          {{
-              netAmount.toLocaleString("en-US", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })
-          }}
-        </p>
+            </div>
+
+            <div>
+              <p>
+                GSIS Personal Share:<br>
+                {{
+                    formattedGsisPshare.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                GSIS Government Share:<br>
+                {{
+                    formattedGsisGshare.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Less GSIS:<br>
+                {{
+                    formattedLessGsis.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Withholding Tax:<br>
+                {{
+                    formattedWithholdingTax.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Total Deduction:<br>
+                {{
+                    totalDeduction.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+              <p>
+                Net Amount:<br>
+                {{
+                    netAmount.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                }}
+              </p>
+
+            </div>
+          </div>
+          <div class="flex space-x-10">
+            <div class="flex items-center justify-center h-10 w-20 bg-darkCyan text-2xl text-white">COPY</div>
+            <div class="flex items-center justify-center h-10 w-20 bg-grayCyan text-2xl text-white">RESET</div>
+          </div>
+
+        </form>
+      </div>
     </div>
-  </div>
 
   </section>
 </template>
@@ -141,8 +160,8 @@ export default {
   setup() {
     const currentSalary = ref(0);
     const properSalary = ref(0);
-    const firstDate = ref(""); //automatically format first date to mm/dd/yyyy
-    const secondDate = ref(""); //automatically format second date to mm/dd/yyyy
+    const firstDate = ref("");
+    const secondDate = ref("");
 
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
