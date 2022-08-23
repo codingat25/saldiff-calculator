@@ -166,6 +166,11 @@ export default {
     const firstDate = ref("");
     const secondDate = ref("");
 
+    // watch([properSalary,currentSalary] (newValue) => {
+    // const result = newValue.replace("/\D/g", "").replace("/\B(?=(\d{3})+(?!\d))/g", ",");
+    //   Vue.nextTick(() => properSalary.value = result);
+    // });
+
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
         return 0;
@@ -603,6 +608,8 @@ export default {
     const netAmount = computed(() => {
       return round(formattedGrossSalDiff.value - totalDeduction.value, 3);
     });
+
+
 
     return {
       dayjs,
