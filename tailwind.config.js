@@ -16,7 +16,7 @@ module.exports = {
         'grayCyan': 'hsl(184, 14%, 56%)',
         'darkGrayCyan': 'hsl(186, 14%, 43%)',
         'veryLightCyan': 'hsl(189, 41%, 97%)',
-        'lightCyan': 'hsl(185, 41%, 84%)',
+        'lightCyan': 'hsl(185, 41%, 93%)',
         'whiteBackground': 'hsl(0, 0%, 100%)',
       },
       fontFamily: {

@@ -1,23 +1,26 @@
 <template>
-  <section id="mainform" class="flex justify-center bg-lightCyan">
-    <div class="flex justify-center items-center h-screen w-screen">
+  <section id="mainform" class="flex bg-lightCyan">
+    <div class="">
       <div
-        class="flex flex-col justify-center items-center h-screen w-screen space-y-5 overflow-auto">
-        <h1 class="font-black text-darkCyan text-2xl">STEP INCREMENT</h1>
-        <form @submit.prevent="" class="flex flex-col justify-center items-center space-y-5">
-          <div class="flex justify-center flex-col mx-11 w-5/6">
-            <input class="p-1 border border-gray-200" type="number" required placeholder="Current Salary"
+        class="flex flex-col justify-center items-center h-screen w-screen md:flex-row bg-whiteBackground overflow-auto">
+        <form @submit.prevent="" class="flex flex-col justify-center space-y-5 md:flex-row md:space-y-0 md:space-x-10  items-center">
+        <div class="flex flex-col justify-center items-center">
+          <h1 class="font-black text-cyan-800 text-3xl">S T E P</h1>
+          <h1 class="font-black text-cyan-800 text-3xl">I N C R E M E N T</h1>
+        </div>
+          <div class="flex justify-center items-center flex-col space-y-2 mx-11 w-5/6">
+            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="number" required placeholder="Current Salary"
               v-model.number="currentSalary" />
-            <input class="p-1 border border-gray-200" type="number" required placeholder="Proper Salary"
+            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="number" required placeholder="Proper Salary"
               v-model.number="properSalary" />
-            <input class="p-2 border border-gray-200" type="text" required placeholder="First Date"
+            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="text" required placeholder="First Date"
               v-model="firstDate" />
-            <input class="p-2 border border-gray-200" type="text" required placeholder="Second Date"
+            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="text" required placeholder="Second Date"
               v-model="secondDate" />
           </div>
-          <div class="flex text-sm">
+          <div class="flex bg-darkCyan text-sm rounded-xl">
             <div class="">
-              <p class="">
+              <p>
                 Current Salary:<br>
                 {{
                     formattedCurrentSalary.toLocaleString("en-US", {
@@ -80,7 +83,7 @@
 
             <div>
               <p>
-                GSIS Personal Share:<br>
+                GSIS PS:<br>
                 {{
                     formattedGsisPshare.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
@@ -89,7 +92,7 @@
                 }}
               </p>
               <p>
-                GSIS Government Share:<br>
+                GSIS GS:<br>
                 {{
                     formattedGsisGshare.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
