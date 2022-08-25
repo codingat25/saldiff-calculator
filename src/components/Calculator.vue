@@ -2,157 +2,211 @@
   <section id="mainform" class="flex bg-lightCyan">
     <div class="">
       <div
-        class="flex flex-col justify-center items-center h-screen w-screen md:flex-row bg-whiteBackground overflow-auto">
-        <form @submit.prevent="" class="flex flex-col justify-center space-y-5 md:flex-row md:space-y-0 md:space-x-10  items-center">
-        <div class="flex flex-col justify-center items-center">
-          <h1 class="font-black text-cyan-800 text-3xl">S T E P</h1>
-          <h1 class="font-black text-cyan-800 text-3xl">I N C R E M E N T</h1>
-        </div>
-          <div class="flex justify-center items-center flex-col space-y-2 mx-11 w-5/6">
-            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="number" required placeholder="Current Salary"
-              v-model.number="currentSalary" />
-            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="number" required placeholder="Proper Salary"
-              v-model.number="properSalary" />
-            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="text" required placeholder="First Date"
-              v-model="firstDate" />
-            <input class="w-72 p-1 bg-lightCyan text-darkCyan font-black text-2xl rounded-md" type="text" required placeholder="Second Date"
-              v-model="secondDate" />
-          </div>
-          <div class="flex bg-darkCyan text-sm rounded-xl">
-            <div class="">
-              <p>
-                Current Salary:<br>
-                {{
-                    formattedCurrentSalary.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Actual Salary:<br>
-                {{
-                    formattedProperSalary.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Difference:<br>
-                {{
-                    formattedInitialDifferentialAmount.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>Period Covered (from):<br>
-                {{ firstDate }}</p>
-              <p>Period Covered (to):<br>
-                {{ secondDate }}</p>
-              <p>
-                Gross Salary Differential:<br>
-                {{
-                    formattedCalculatedDifferential.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                SD Bonus:<br>
-                {{
-                    formattedSdBonus.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Gross SD + SD Bonus:<br>
-                {{
-                    formattedGrossSalDiff.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-
-            </div>
-
-            <div>
-              <p>
-                GSIS PS:<br>
-                {{
-                    formattedGsisPshare.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                GSIS GS:<br>
-                {{
-                    formattedGsisGshare.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Less GSIS:<br>
-                {{
-                    formattedLessGsis.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Withholding Tax:<br>
-                {{
-                    formattedWithholdingTax.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Total Deduction:<br>
-                {{
-                    totalDeduction.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-              <p>
-                Net Amount:<br>
-                {{
-                    netAmount.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                }}
-              </p>
-
+        class="flex flex-col justify-center items-center h-screen w-screen md:flex-row bg-whiteBackground overflow-auto"
+      >
+        <form
+          @submit.prevent=""
+          class="flex flex-col justify-center items-center w-4/6 h-3/4 space-y-2 md:space-y-0"
+        >
+          <div class="flex flex-col w-full">
+            <div class="flex flex-col justify-center items-center">
+              <h1 class="font-black text-cyan-800 text-2xl">S T E P</h1>
+              <h1 class="font-black text-cyan-800 text-2xl">
+                I N C R E M E N T
+              </h1>
             </div>
           </div>
-          <div class="flex space-x-10">
-            <div class="flex items-center justify-center h-10 w-20 bg-darkCyan text-2xl text-white">COPY</div>
-            <div class="flex items-center justify-center h-10 w-20 bg-grayCyan text-2xl text-white">RESET</div>
-          </div>
 
+          <div class="flex flex-col justify-center items-center md:flex-row w-full h-full">
+            <div
+              class="flex justify-center items-center flex-col space-y-2 mx-11 w-1/2"
+            >
+              <input
+                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                type="number"
+                required
+                placeholder="Current Salary"
+                v-model.number="currentSalary"
+              />
+              <input
+                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                type="number"
+                required
+                placeholder="Proper Salary"
+                v-model.number="properSalary"
+              />
+              <input
+                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                type="text"
+                required
+                placeholder="First Date"
+                v-model="firstDate"
+              />
+              <input
+                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                type="text"
+                required
+                placeholder="Second Date"
+                v-model="secondDate"
+              />
+            </div>
+
+            <div
+              class="flex flex-col justify-center items-center space-y-3 w-1/2 h-full"
+            >
+              <div class="flex w-full h-full bg-darkCyan text-sm rounded-sm">
+                <div class="flex flex-row justify-center text-veryLightCyan">
+                  <div class="">
+                    <p>
+                      Current Salary:<br />
+                      {{
+                        formattedCurrentSalary.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Actual Salary:<br />
+                      {{
+                        formattedProperSalary.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Difference:<br />
+                      {{
+                        formattedInitialDifferentialAmount.toLocaleString(
+                          "en-US",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )
+                      }}
+                    </p>
+                    <p>
+                      Period Covered (from):<br />
+                      {{ firstDate }}
+                    </p>
+                    <p>
+                      Period Covered (to):<br />
+                      {{ secondDate }}
+                    </p>
+                    <p>
+                      Gross Salary Differential:<br />
+                      {{
+                        formattedCalculatedDifferential.toLocaleString(
+                          "en-US",
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )
+                      }}
+                    </p>
+                    <p>
+                      SD Bonus:<br />
+                      {{
+                        formattedSdBonus.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Gross SD + SD Bonus:<br />
+                      {{
+                        formattedGrossSalDiff.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p>
+                      GSIS PS:<br />
+                      {{
+                        formattedGsisPshare.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      GSIS GS:<br />
+                      {{
+                        formattedGsisGshare.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Less GSIS:<br />
+                      {{
+                        formattedLessGsis.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Withholding Tax:<br />
+                      {{
+                        formattedWithholdingTax.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Total Deduction:<br />
+                      {{
+                        totalDeduction.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                    <p>
+                      Net Amount:<br />
+                      {{
+                        netAmount.toLocaleString("en-US", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="flex space-x-10">
+                <div
+                  class="flex items-center justify-center h-10 w-40 bg-darkCyan text-2xl text-white"
+                >
+                  COPY
+                </div>
+                <div
+                  class="flex items-center justify-center h-10 w-40 bg-grayCyan text-2xl text-white"
+                >
+                  RESET
+                </div>
+              </div>
+            </div>
+          </div>
         </form>
       </div>
     </div>
-
   </section>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import dayjs from "dayjs";
 import dayjsBusinessDays from "dayjs-business-days2";
 import { round } from "mathjs/number";
@@ -161,15 +215,15 @@ dayjs.extend(dayjsBusinessDays);
 
 export default {
   setup() {
-    const currentSalary = ref(0);
-    const properSalary = ref(0);
+    const currentSalary = ref("");
+    const properSalary = ref("");
     const firstDate = ref("");
     const secondDate = ref("");
 
-    // watch([properSalary,currentSalary] (newValue) => {
-    // const result = newValue.replace("/\D/g", "").replace("/\B(?=(\d{3})+(?!\d))/g", ",");
-    //   Vue.nextTick(() => properSalary.value = result);
-    // });
+    // watch(currentSalary,(newSalary, oldSalary)=>{
+    //    currentSalary.value = newSalary.replace(/\D/g, "")
+    //     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // })
 
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
@@ -420,7 +474,7 @@ export default {
       ) {
         return (
           (initialDifferentialAmount.value / 22) *
-          businessDaysSecondDate.value +
+            businessDaysSecondDate.value +
           initialDifferentialAmount.value * differenceInMonths.value
         );
       } else if (
@@ -437,7 +491,7 @@ export default {
       ) {
         return (
           (initialDifferentialAmount.value / 22) *
-          businessDaysSecondDate.value +
+            businessDaysSecondDate.value +
           initialDifferentialAmount.value * differenceInMonths.value +
           (initialDifferentialAmount.value / 22) * businessDaysFirstDate.value +
           initialDifferentialAmount.value * differenceInMonths.value +
@@ -476,11 +530,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisPS.value +
+            differenceInMonths.value *
+            gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-          totalCalendarDaysFirst.value *
-          gsisPS.value
+            totalCalendarDaysFirst.value *
+            gsisPS.value
         );
       } else if (
         checkFirstDate.value === true &&
@@ -488,11 +542,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisPS.value +
+            differenceInMonths.value *
+            gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-          totalCalendarDaysSecond.value *
-          gsisPS.value
+            totalCalendarDaysSecond.value *
+            gsisPS.value
         );
       } else if (
         checkFirstDate.value === false &&
@@ -500,14 +554,14 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisPS.value +
+            differenceInMonths.value *
+            gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-          totalCalendarDaysFirst.value *
-          gsisPS.value +
+            totalCalendarDaysFirst.value *
+            gsisPS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-          totalCalendarDaysSecond.value *
-          gsisPS.value
+            totalCalendarDaysSecond.value *
+            gsisPS.value
         );
       }
     });
@@ -525,11 +579,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisGS.value +
+            differenceInMonths.value *
+            gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-          totalCalendarDaysFirst.value *
-          gsisGS.value
+            totalCalendarDaysFirst.value *
+            gsisGS.value
         );
       } else if (
         checkFirstDate.value === true &&
@@ -537,11 +591,11 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisGS.value +
+            differenceInMonths.value *
+            gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-          totalCalendarDaysSecond.value *
-          gsisGS.value
+            totalCalendarDaysSecond.value *
+            gsisGS.value
         );
       } else if (
         checkFirstDate.value === false &&
@@ -549,14 +603,14 @@ export default {
       ) {
         return (
           initialDifferentialAmount.value *
-          differenceInMonths.value *
-          gsisGS.value +
+            differenceInMonths.value *
+            gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfFirstDay.value) *
-          totalCalendarDaysFirst.value *
-          gsisGS.value +
+            totalCalendarDaysFirst.value *
+            gsisGS.value +
           (initialDifferentialAmount.value / fullMonthOfSecondDay.value) *
-          totalCalendarDaysSecond.value *
-          gsisGS.value
+            totalCalendarDaysSecond.value *
+            gsisGS.value
         );
       }
     });
@@ -608,8 +662,6 @@ export default {
     const netAmount = computed(() => {
       return round(formattedGrossSalDiff.value - totalDeduction.value, 3);
     });
-
-
 
     return {
       dayjs,
