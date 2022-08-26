@@ -22,28 +22,28 @@
               class="flex justify-center items-center flex-col space-y-2 mx-11 w-1/2"
             >
               <input
-                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                :class="inputStyle"
                 type="number"
                 required
                 placeholder="Current Salary"
                 v-model.number="currentSalary"
               />
               <input
-                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                :class="inputStyle"
                 type="number"
                 required
                 placeholder="Proper Salary"
                 v-model.number="properSalary"
               />
               <input
-                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                :class="inputStyle"
                 type="text"
                 required
                 placeholder="First Date"
                 v-model="firstDate"
               />
               <input
-                class="w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
+                :class="inputStyle"
                 type="text"
                 required
                 placeholder="Second Date"
@@ -219,12 +219,15 @@ export default {
     const properSalary = ref("");
     const firstDate = ref("");
     const secondDate = ref("");
+    const inputStyle = "w-72 p-1 bg-lightCyan text-darkCyan font-bold text-xl rounded-md"
 
     // watch(currentSalary,(newSalary, oldSalary)=>{
     //    currentSalary.value = newSalary.replace(/\D/g, "")
     //     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     // })
 
+    // COMPUTE INITIAL DIFFERENTIAL AMOUNT
+    //====================================
     const initialDifferentialAmount = computed(() => {
       if (properSalary.value - currentSalary.value <= 0) {
         return 0;
@@ -233,6 +236,8 @@ export default {
       }
     });
 
+    //DETERMINE FIRST DAY AND LAST DAY OF DATES GIVEN
+    //===============================================
     const firstDayOfFirstDate = computed(() => {
       if (
         dayjs(firstDate.value).startOf("month").format("MM/DD/YYYY") ===
@@ -272,6 +277,9 @@ export default {
         return dayjs(secondDate.value).endOf("months").format("MM/DD/YYYY");
     });
 
+
+    //CHECK IF DATES GIVEN ARE EQUAL TO THEIR FIRST DAY OR LAST DAY
+    //=============================================================
     const checkFirstDate = computed(() => {
       return firstDayOfFirstDate.value === firstDate.value;
     });
@@ -280,6 +288,9 @@ export default {
       return lastDayOfSecondDate.value === secondDate.value;
     });
 
+
+    //DETERMINE THE DIFFERENCE BETWEEN TWO DATES
+    //==========================================
     const differenceInMonths = computed(() => {
       if (checkFirstDate.value && checkSecondDate.value) {
         return dayjs(secondDate.value).diff(firstDate.value, "month") + 1;
@@ -291,6 +302,8 @@ export default {
       } else return 0;
     });
 
+    //DETERMINE CALENDAR DAYS OF DATES GIVEN
+    //======================================
     const totalCalendarDaysFirst = computed(() => {
       if (
         isNaN(
@@ -317,6 +330,7 @@ export default {
       }
     });
 
+    //DETERMINE FULL MONTH OF DAYS GIVEN
     const fullMonthOfFirstDay = computed(() => {
       return (
         dayjs(lastDayOfFirstDate.value).diff(firstDayOfFirstDate.value, "day") +
@@ -333,6 +347,7 @@ export default {
       );
     });
 
+    //GET CURRENT YEAR
     const getYear = computed(() => {
       if (firstDate.value === null) {
         return 0;
@@ -341,6 +356,7 @@ export default {
       }
     });
 
+    //RULE IF ELIGIBLE FOR MID YEAR BONUS OR YEAR END BONUS
     const midYearDate = computed(() => {
       return "05/15/".concat(getYear.value);
     });
@@ -349,6 +365,7 @@ export default {
       return "10/31/".concat(getYear.value);
     });
 
+    //GET MONTH AND DAY OF GIVEN DATES
     const getMonthOfFirstDay = computed(() => {
       return dayjs(firstDate.value).month() + 1;
     });
@@ -377,6 +394,7 @@ export default {
       return dayjs(lastDayOfSecondDate.value).date();
     });
 
+    //COMPUTE BUSINESS DAYS 
     const businessDaysFirstDate = computed(() => {
       const arrayedDates = [];
       for (
@@ -407,6 +425,8 @@ export default {
       return allTrue.length;
     });
 
+    //DETERMINE IF AN EMPLOYEE IS ELIGIBLE FOR MID YEAR AND YEAR END BONUS
+    //====================================================================
     const midYearEligible = computed(() => {
       if (
         firstDate.value <= midYearDate.value &&
@@ -429,6 +449,8 @@ export default {
       }
     });
 
+
+    //GSIS PS AND GS RATES
     const gsisPS = computed(() => {
       return 0.09;
     });
@@ -437,6 +459,7 @@ export default {
       return 0.12;
     });
 
+    //TAX RATES
     const taxPercentage = computed(() => {
       if (properSalary.value * 12 <= 250000) {
         return 0;
@@ -465,6 +488,7 @@ export default {
       }
     });
 
+    //CALCULATE DIFFERENTIAL AMOUNT
     const calculatedDifferential = computed(() => {
       if (checkFirstDate.value && checkSecondDate.value) {
         return initialDifferentialAmount.value * differenceInMonths.value;
@@ -500,6 +524,7 @@ export default {
       }
     });
 
+    //CALCULATE BONUS
     const sdBonus = computed(() => {
       if (midYearEligible.value && yearEndEligible.value) {
         return initialDifferentialAmount.value * 2;
@@ -513,10 +538,12 @@ export default {
       }
     });
 
+    //CALCULATE GROSS SALARY DIFFERENTIAL
     const grossSalDiff = computed(() => {
       return calculatedDifferential.value + sdBonus.value;
     });
 
+    //CALCULATE GSIS PERSONAL SHARE
     const gsisPshare = computed(() => {
       if (checkFirstDate.value === true && checkSecondDate.value === true) {
         return (
@@ -566,6 +593,7 @@ export default {
       }
     });
 
+    //CALCULATE GSIS GOVERNMENT SHARE
     const gsisGshare = computed(() => {
       if (checkFirstDate.value === true && checkSecondDate.value === true) {
         return (
@@ -615,6 +643,8 @@ export default {
       }
     });
 
+    //BASIC COMPUTATION OF DEDUCTIONS
+
     const lessGsis = computed(() => {
       return calculatedDifferential.value - gsisPshare.value;
     });
@@ -622,6 +652,8 @@ export default {
     const withholdingTax = computed(() => {
       return lessGsis.value * taxPercentage.value;
     });
+
+    //FORMATTED VALUES ROUNDED BY TWO DECIMAL PLACES
 
     const formattedProperSalary = computed(() => {
       return round(properSalary.value, 2);
@@ -655,6 +687,7 @@ export default {
       return round(withholdingTax.value, 2);
     });
 
+    //BASIC DEDUCTIONS
     const totalDeduction = computed(() => {
       return formattedGsisPshare.value + formattedWithholdingTax.value;
     });
@@ -668,6 +701,7 @@ export default {
       dayjsBusinessDays,
       properSalary,
       currentSalary,
+      inputStyle,
       formattedProperSalary,
       formattedCurrentSalary,
       formattedInitialDifferentialAmount,
